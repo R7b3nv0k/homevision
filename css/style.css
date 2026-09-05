@@ -600,9 +600,9 @@ form input:focus,
 
 /* --- Aloldalak közös stílusai --- */
 .page-container {
-    max-width: 1200px;
+    max-width: 1240px;
     margin: 3rem auto;
-    padding: 0 5%;
+    padding: 0 1.75rem;
     animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
@@ -1223,8 +1223,8 @@ form input:focus,
 /* 2 Oszlopos Fő Elrendezés */
 .plan-detail-layout {
     display: grid;
-    grid-template-columns: 1.45fr 1fr;
-    gap: 2.5rem;
+    grid-template-columns: 1.48fr 1fr;
+    gap: 2rem;
     margin-bottom: 3.5rem;
     align-items: start;
 }
@@ -1336,39 +1336,59 @@ form input:focus,
     bottom: 16px;
     left: 50%;
     transform: translateX(-50%);
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
     border: 1px solid var(--border-color);
-    padding: 6px 12px;
+    padding: 5px 8px;
     border-radius: 40px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 4px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
     z-index: 10;
-    max-width: 95%;
+    width: max-content;
+    max-width: calc(100% - 24px);
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    -webkit-overflow-scrolling: touch;
+}
+
+.model-toolbar-floating::-webkit-scrollbar {
+    display: none;
 }
 
 [data-theme="dark"] .model-toolbar-floating {
-    background: rgba(17, 24, 39, 0.88);
+    background: rgba(17, 24, 39, 0.9);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.toolbar-divider {
+    display: inline-block;
+    width: 1px;
+    height: 18px;
+    background: var(--border-color);
+    margin: 0 2px;
+    flex-shrink: 0;
+    opacity: 0.8;
 }
 
 .tool-btn {
     background: transparent;
     border: 1px solid transparent;
-    padding: 6px 12px;
+    padding: 5px 9px;
     border-radius: 20px;
-    font-size: 0.82rem;
+    font-size: 0.77rem;
     font-weight: 600;
     color: var(--text-color);
     cursor: pointer;
-    transition: all 0.25s ease;
+    transition: all 0.22s ease;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
     white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .tool-btn:hover {
@@ -1381,6 +1401,7 @@ form input:focus,
 .tool-btn.active {
     background: var(--primary-color);
     color: #ffffff;
+    border-color: var(--primary-color);
     box-shadow: 0 2px 8px var(--primary-glow);
 }
 
@@ -2271,8 +2292,13 @@ form input:focus,
         background: rgba(17, 24, 39, 0.94) !important;
     }
 
+    .toolbar-divider {
+        height: 15px !important;
+        margin: 0 1px !important;
+    }
+
     .tool-btn {
-        padding: 6px 11px !important;
+        padding: 5px 9px !important;
         font-size: 0.74rem !important;
         font-weight: 600 !important;
         border-radius: 20px !important;

@@ -53,7 +53,7 @@
     <div class="mobile-nav-backdrop"></div>
 
     <!-- Főoldali Konténer -->
-    <main class="page-container" style="max-width: 1240px; margin-top: 2rem;">
+    <main class="page-container" style="max-width: 1280px; margin-top: 2rem;">
 
         <!-- 1. Hirdetési Top Promóciós Szalag -->
         <div class="ad-top-ribbon">
@@ -126,12 +126,13 @@
                         <button id="btnToggleRotate" class="tool-btn active" title="Forgatás ki/bekapcsolása">
                             🔄 Forgatás
                         </button>
-                        <button id="btnToggleRoof" class="tool-btn" title="Tető levétele a belső tér megtekintéséhez">
-                            🏠 Tető Levétele
+                        <button id="btnToggleRoof" class="tool-btn" title="Tető levétele / visszahelyezése">
+                            🏠 Tető
                         </button>
                         <button id="btnToggleDayNight" class="tool-btn" title="Nappali és éjszakai fények váltása">
                             ☀️ Nappal
                         </button>
+                        <span class="toolbar-divider" aria-hidden="true"></span>
                         <button id="btnViewFront" class="tool-btn" title="Homlokzati nézet">
                             Homlokzat
                         </button>
@@ -141,7 +142,7 @@
                         <button id="btnViewTop" class="tool-btn" title="Felülnézet / Alaprajz">
                             Felülnézet
                         </button>
-                        <button id="btnResetCamera" class="tool-btn" title="Alap kameraállás">
+                        <button id="btnResetCamera" class="tool-btn" title="Alap kameraállás visszaállítása">
                             ⛶ Alap
                         </button>
                     </div>
@@ -1247,7 +1248,7 @@
                 btnRoof.addEventListener('click', () => {
                     isRoofLifted = !isRoofLifted;
                     btnRoof.classList.toggle('active', isRoofLifted);
-                    btnRoof.textContent = isRoofLifted ? '🏠 Tető Vissza' : '🏠 Tető Levétele';
+                    btnRoof.textContent = isRoofLifted ? '🏠 Tető Vissza' : '🏠 Tető';
 
                     let targetY = isRoofLifted ? 5.5 : 0;
                     animateRoof(targetY);
