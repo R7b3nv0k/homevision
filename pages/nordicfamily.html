@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html lang="hu" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Vision | Nordic Family — Prémium Skandináv Családi Házterv</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <script>
+        (function () {
+            var theme = localStorage.getItem('homevision_theme');
+            if (theme) document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+
+    <!-- Three.js a 3D modellhez -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+
+<body>
+
+    <!-- Navigáció -->
+    <nav class="navbar">
+        <a href="../index.html" class="logo" style="display: flex; align-items: center;"
+            aria-label="HomeVision Főoldal">
+            <img src="../images/logo.png" alt="HomeVision" class="logo-img logo-light">
+            <img src="../images/logo-dark.png" alt="HomeVision" class="logo-img logo-dark">
+        </a>
+        <ul class="nav-links">
+            <li><a href="../index.html" data-i18n="home">Főoldal</a></li>
+            <li><a href="tervek.html" class="active" data-i18n="plans">Tervek</a></li>
+            <li><a href="megvalositas.html" data-i18n="implementation">Megvalósítás</a></li>
+            <li><a href="media.html" data-i18n="media">Média</a></li>
+            <li><a href="rolunk.html" data-i18n="about">Rólunk</a></li>
+            <li><a href="kapcsolat.html" data-i18n="contact">Kapcsolat</a></li>
+        </ul>
+        <div class="nav-controls">
+            <button id="themeToggle" class="btn-icon" aria-label="Téma váltás">🌓</button>
+            <button id="langToggle" class="btn-text" aria-label="Nyelv váltás">EN</button>
+            <button id="loginBtn" class="btn-primary" data-i18n="login">Bejelentkezés</button>
+            <button id="mobileMenuBtn" class="hamburger-btn" aria-label="Menü megnyitása">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+        </div>
+    </nav>
+    <div class="mobile-nav-backdrop"></div>
+
+    <!-- Főoldali Konténer -->
+    <main class="page-container" style="max-width: 1240px; margin-top: 2rem;">
+
+        <!-- 1. Hirdetési Top Promóciós Szalag -->
+        <div class="ad-top-ribbon">
+            <div>
+                <span class="ad-top-ribbon-tag">Őszi Akció</span>
+                <span>🔥 <strong>-70.000 Ft kedvezmény</strong> a tervcsomagra + Ingyenes helyszíni konzultáció a
+                    Térmágus Kft.-vel!</span>
+            </div>
+            <div style="font-weight: 600; opacity: 0.9;">⏳ Korlátozott ideig érvényes ajánlat</div>
+        </div>
+
+        <!-- 2. Morzsamenü -->
+        <div class="ad-breadcrumb">
+            <a href="../index.html">Főoldal</a> &rsaquo;
+            <a href="tervek.html">Megvásárolható Tervek</a> &rsaquo;
+            <span>Nordic Family Modell (150 m²)</span>
+        </div>
+
+        <!-- 3. Hirdetés Fejléc -->
+        <div class="ad-hero-header">
+            <div class="ad-title-row">
+                <div>
+                    <h1 class="ad-main-title">Nordic Family — Prémium Skandináv Villa</h1>
+                    <p class="ad-subtitle">
+                        150 m² tiszta skandináv elegancia, 4 tágas hálószoba, dupla garázs és közvetlen kerti
+                        teraszkapcsolat. Hivatalos, azonnal építhető kiviteli tervdokumentáció teljes gépészettel és
+                        statikával.
+                    </p>
+                </div>
+            </div>
+            <div class="ad-badge-group">
+                <span class="ad-badge featured">🔥 Bestseller Családi Házterv</span>
+                <span class="ad-badge energy">⚡ A+ Közel Nulla Energiaigény</span>
+                <span class="ad-badge award">🏆 2026 Kivitelezési Nívódíj</span>
+                <span class="ad-badge">🛡️ 100% Engedélyezési Garancia</span>
+                <span class="ad-badge">⭐ 4.9 / 5.0 (18 Megvalósult Épület)</span>
+            </div>
+        </div>
+
+        <!-- 4. Fő 2-Oszlopos Hirdetési & Interaktív Bemutató -->
+        <div class="plan-detail-layout">
+
+            <!-- Bal Oszlop: Interaktív 3D Bejáró, Galéria és Alaprajz -->
+            <div class="viewer-card">
+                <!-- Felső Választósáv (Tabs) -->
+                <div class="viewer-header-bar">
+                    <div class="viewer-tab-buttons">
+                        <button class="viewer-tab-btn active" id="tab3dBtn" onclick="switchViewerTab('3d')">
+                            🎮 3D Modell
+                        </button>
+                        <button class="viewer-tab-btn" id="tabGalleryBtn" onclick="switchViewerTab('gallery')">
+                            📸 Látványtervek
+                        </button>
+                        <button class="viewer-tab-btn" id="tabFloorplanBtn" onclick="switchViewerTab('floorplan')">
+                            📐 Alaprajz
+                        </button>
+                    </div>
+                    <div class="live-indicator">
+                        <span class="live-dot"></span>
+                        <span id="viewerStatusText">Valós idejű 3D nézet</span>
+                    </div>
+                </div>
+
+                <!-- 1. TAB: RÉSZLETES 3D MODELL -->
+                <div id="view3DContainer" class="model-wrapper">
+                    <div id="3d-container" class="model-canvas-box"></div>
+
+                    <!-- Lebegő Vezérlősáv a 3D vásznon -->
+                    <div class="model-toolbar-floating">
+                        <button id="btnToggleRotate" class="tool-btn active" title="Forgatás ki/bekapcsolása">
+                            🔄 Forgatás
+                        </button>
+                        <button id="btnToggleRoof" class="tool-btn" title="Tető levétele a belső tér megtekintéséhez">
+                            🏠 Tető Levétele
+                        </button>
+                        <button id="btnToggleDayNight" class="tool-btn" title="Nappali és éjszakai fények váltása">
+                            ☀️ Nappal
+                        </button>
+                        <button id="btnViewFront" class="tool-btn" title="Homlokzati nézet">
+                            Homlokzat
+                        </button>
+                        <button id="btnViewPatio" class="tool-btn" title="Kerti terasz nézet">
+                            Terasz
+                        </button>
+                        <button id="btnViewTop" class="tool-btn" title="Felülnézet / Alaprajz">
+                            Felülnézet
+                        </button>
+                        <button id="btnResetCamera" class="tool-btn" title="Alap kameraállás">
+                            ⛶ Alap
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 2. TAB: LÁTVÁNYTERV GALÉRIA -->
+                <div id="viewGalleryContainer" class="viewer-gallery-content">
+                    <img id="mainGalleryImage" src="../images/nordic_family.jpg"
+                        alt="Nordic Family Modern Skandináv Ház" class="gallery-main-img">
+                    <div class="gallery-thumbs">
+                        <img src="../images/nordic_family.jpg" alt="Fő homlokzat" class="gallery-thumb active"
+                            onclick="setGalleryImage(this, '../images/nordic_family.jpg')">
+                        <img src="../images/villa_minimal.jpg" alt="Kerti terasz és medence" class="gallery-thumb"
+                            onclick="setGalleryImage(this, '../images/villa_minimal.jpg')">
+                        <img src="../images/eco_compact.jpg" alt="Belső nappali tér" class="gallery-thumb"
+                            onclick="setGalleryImage(this, '../images/eco_compact.jpg')">
+                        <img src="../images/nordic_family.jpg" alt="Esti hangulatfények" class="gallery-thumb"
+                            onclick="setGalleryImage(this, '../images/nordic_family.jpg')">
+                    </div>
+                </div>
+
+                <!-- 3. TAB: ALAPRAJZ -->
+                <div id="viewFloorplanContainer" class="viewer-floorplan-content">
+                    <div class="floorplan-wrapper">
+                        <svg class="floorplan-svg" viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Háttér és telek kontúr -->
+                            <rect width="900" height="600" fill="var(--nav-bg)" rx="10" />
+
+                            <!-- Külső falak (kontúr) -->
+                            <rect x="70" y="70" width="760" height="460" fill="none" stroke="var(--border-color)"
+                                stroke-width="2" stroke-dasharray="4" />
+
+                            <!-- Terasz -->
+                            <rect x="340" y="60" width="360" height="110" fill="rgba(196, 154, 108, 0.2)"
+                                stroke="#c49a6c" stroke-width="2" rx="4" />
+                            <text x="520" y="125" fill="var(--text-color)" font-size="14" font-weight="700"
+                                text-anchor="middle">FEDETT KERTI TERASZ (38.0 m²)</text>
+
+                            <!-- Ház fő kontúrja -->
+                            <rect x="120" y="170" width="660" height="340" fill="var(--bg-color)"
+                                stroke="var(--text-color)" stroke-width="3" rx="4" />
+
+                            <!-- Dupla garázs -->
+                            <rect x="120" y="310" width="220" height="200" fill="rgba(255, 84, 77, 0.05)"
+                                stroke="var(--text-color)" stroke-width="2" />
+                            <text x="230" y="405" fill="var(--text-color)" font-size="13" font-weight="700"
+                                text-anchor="middle">DUPLA GARÁZS</text>
+                            <text x="230" y="425" fill="var(--primary-color)" font-size="12" font-weight="600"
+                                text-anchor="middle">36.0 m²</text>
+
+                            <!-- Előtér / Belépő -->
+                            <rect x="340" y="410" width="110" height="100" fill="var(--bg-color)"
+                                stroke="var(--text-color)" stroke-width="1.5" />
+                            <text x="395" y="455" fill="var(--text-color)" font-size="11" font-weight="600"
+                                text-anchor="middle">Előtér</text>
+                            <text x="395" y="472" fill="var(--primary-color)" font-size="10" text-anchor="middle">6.4
+                                m²</text>
+
+                            <!-- Gépészet / Háztartási helyiség -->
+                            <rect x="340" y="310" width="110" height="100" fill="var(--bg-color)"
+                                stroke="var(--text-color)" stroke-width="1.5" />
+                            <text x="395" y="355" fill="var(--text-color)" font-size="11" font-weight="600"
+                                text-anchor="middle">Gépészet</text>
+                            <text x="395" y="372" fill="var(--primary-color)" font-size="10" text-anchor="middle">5.8
+                                m²</text>
+
+                            <!-- Tágas Nappali - Étkező - Konyha -->
+                            <rect x="340" y="170" width="310" height="140" fill="rgba(255, 84, 77, 0.08)"
+                                stroke="var(--primary-color)" stroke-width="2" />
+                            <text x="495" y="235" fill="var(--text-color)" font-size="15" font-weight="800"
+                                text-anchor="middle">AMERIKAI KONYHÁS NAPPALI & ÉTKEZŐ</text>
+                            <text x="495" y="260" fill="var(--primary-color)" font-size="14" font-weight="700"
+                                text-anchor="middle">41.8 m² (Közvetlen teraszkapcsolattal)</text>
+
+                            <!-- Szülői Master Háló + Gardrób + Fürdő -->
+                            <rect x="650" y="170" width="130" height="170" fill="var(--bg-color)"
+                                stroke="var(--text-color)" stroke-width="2" />
+                            <text x="715" y="245" fill="var(--text-color)" font-size="12" font-weight="700"
+                                text-anchor="middle">Szülői Háló</text>
+                            <text x="715" y="265" fill="var(--primary-color)" font-size="11" text-anchor="middle">16.2
+                                m²</text>
+
+                            <rect x="650" y="340" width="65" height="80" fill="var(--bg-color)"
+                                stroke="var(--text-color)" stroke-width="1.5" />
+                            <text x="682" y="380" fill="var(--text-color)" font-size="9"
+                                text-anchor="middle">Gardrób</text>
+
+                            <rect x="715" y="340" width="65" height="80" fill="var(--bg-color)"
+                                stroke="var(--text-color)" stroke-width="1.5" />
+                            <text x="747" y="380" fill="var(--text-color)" font-size="9" text-anchor="middle">Fürdő
+                                1</text>
+
+                            <!-- Gyerekszoba 1 -->
+                            <rect x="450" y="360" width="115" height="150" fill="var(--bg-color)"
+                                stroke="var(--text-color)" stroke-width="1.5" />
+                            <text x="507" y="430" fill="var(--text-color)" font-size="12" font-weight="600"
+                                text-anchor="middle">Gyerekszoba 1</text>
+                            <text x="507" y="450" fill="var(--primary-color)" font-size="11" text-anchor="middle">12.6
+                                m²</text>
+
+                            <!-- Gyerekszoba 2 -->
+                            <rect x="565" y="360" width="115" height="150" fill="var(--bg-color)"
+                                stroke="var(--text-color)" stroke-width="1.5" />
+                            <text x="622" y="430" fill="var(--text-color)" font-size="12" font-weight="600"
+                                text-anchor="middle">Gyerekszoba 2</text>
+                            <text x="622" y="450" fill="var(--primary-color)" font-size="11" text-anchor="middle">12.4
+                                m²</text>
+
+                            <!-- Családi Fürdőszoba -->
+                            <rect x="680" y="420" width="100" height="90" fill="var(--bg-color)"
+                                stroke="var(--text-color)" stroke-width="1.5" />
+                            <text x="730" y="465" fill="var(--text-color)" font-size="11" font-weight="600"
+                                text-anchor="middle">Családi Fürdő</text>
+                            <text x="730" y="482" fill="var(--primary-color)" font-size="10" text-anchor="middle">7.8
+                                m²</text>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Alsó Használati Segítség Sor -->
+                <div class="viewer-hint-strip">
+                    <span>💡 <strong>Irányítás:</strong> Bal gomb = forgatás • Görgő = zoom • Jobb gomb = mozgatás •
+                        Próbáld ki a tető levételét és az éjszakai módot!</span>
+                </div>
+            </div>
+
+            <!-- Jobb Oszlop: Hirdetési Vásárlási Kártya -->
+            <div class="ad-sidebar-card">
+
+                <!-- Ár Doboz Akcióval -->
+                <div class="ad-price-section">
+                    <span class="ad-discount-badge">-17% KEDVEZMÉNY</span>
+                    <p class="ad-price-label">Teljes Kiviteli Tervcsomag Ára:</p>
+                    <div style="display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px;">
+                        <span class="ad-old-price">420.000 Ft</span>
+                        <h2 class="ad-current-price">350.000 Ft <span class="brutto">(bruttó)</span></h2>
+                    </div>
+                    <div class="ad-price-perks">
+                        <span>⚡ Megtakarítás: <strong>70.000 Ft</strong></span>
+                        <span>• Azonnali letöltés</span>
+                    </div>
+                </div>
+
+                <!-- 6 Ikonos Főbb Jellemzők -->
+                <div class="ad-quick-specs">
+                    <div class="ad-spec-item">
+                        <span class="ad-spec-icon">📐</span>
+                        <span class="ad-spec-val">150 m²</span>
+                        <span class="ad-spec-lbl">Hasznos lakótér</span>
+                    </div>
+                    <div class="ad-spec-item">
+                        <span class="ad-spec-icon">🛏️</span>
+                        <span class="ad-spec-val">5 Szoba</span>
+                        <span class="ad-spec-lbl">4 Háló + Nappali</span>
+                    </div>
+                    <div class="ad-spec-item">
+                        <span class="ad-spec-icon">🚿</span>
+                        <span class="ad-spec-val">2 Fürdő</span>
+                        <span class="ad-spec-lbl">+ Külön WC</span>
+                    </div>
+                    <div class="ad-spec-item">
+                        <span class="ad-spec-icon">🚗</span>
+                        <span class="ad-spec-val">36 m²</span>
+                        <span class="ad-spec-lbl">Dupla Garázs</span>
+                    </div>
+                    <div class="ad-spec-item">
+                        <span class="ad-spec-icon">🌿</span>
+                        <span class="ad-spec-val">38 m²</span>
+                        <span class="ad-spec-lbl">Fedett Terasz</span>
+                    </div>
+                    <div class="ad-spec-item">
+                        <span class="ad-spec-icon">⚡</span>
+                        <span class="ad-spec-val">A+ Osztály</span>
+                        <span class="ad-spec-lbl">Hőszivattyús</span>
+                    </div>
+                </div>
+
+                <!-- Mit Tartalmaz a Tervcsomag? -->
+                <div class="ad-package-title">
+                    📦 Mit tartalmaz a tervcsomag?
+                </div>
+                <ul class="ad-package-list">
+                    <li><span class="ad-check-icon">✓</span> <span><strong>Építészeti kiviteli tervdokumentáció</strong>
+                            (M=1:50 méretarányban)</span></li>
+                    <li><span class="ad-check-icon">✓</span> <span><strong>Tartószerkezeti (statikai) tervek</strong> és
+                            vasalási számítások</span></li>
+                    <li><span class="ad-check-icon">✓</span> <span><strong>Épületgépészeti kiviteli tervek</strong>
+                            (hőszivattyú, padlófűtés)</span></li>
+                    <li><span class="ad-check-icon">✓</span> <span><strong>Erős- és gyengeáramú</strong> villamos
+                            hálózati tervek</span></li>
+                    <li><span class="ad-check-icon">✓</span> <span><strong>Tételes árazatlan költségvetési
+                                kiírás</strong> (anyaglista)</span></li>
+                    <li><span class="ad-check-icon">✓</span> <span><strong>Hivatalos energetikai tanúsítvány</strong> és
+                            számítás</span></li>
+                    <li><span class="ad-check-icon">✓</span> <span><strong>5 db pecsételt nyomtatott példány</strong>
+                            ingyenes futárszolgálattal</span></li>
+                    <li><span class="ad-check-icon">✓</span> <span><strong>Digitális formátumok:</strong> PDF, DWG (CAD)
+                            és BIM 3D modell</span></li>
+                </ul>
+
+                <!-- Akciógombok -->
+                <div class="ad-actions">
+                    <button class="btn-primary btn-ad-buy" id="buyPlanBtn">
+                        🛒 Tervcsomag Megvásárlása Most
+                    </button>
+                    <a href="kapcsolat.html" class="btn-ad-secondary">
+                        📞 Ingyenes Mérnöki Konzultáció Kérése
+                    </a>
+                </div>
+
+                <!-- Bizalmi Garancia Doboz -->
+                <div class="ad-trust-row">
+                    <div class="ad-trust-item">
+                        <span>🛡️</span>
+                        <span>100% Engedélyezési Garancia</span>
+                    </div>
+                    <div class="ad-trust-item">
+                        <span>🏗️</span>
+                        <span>Térmágus Kft. Kivitelezés</span>
+                    </div>
+                    <div class="ad-trust-item">
+                        <span>🔒</span>
+                        <span>Biztonságos Fizetés</span>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- 5. Kiemelt Előnyök & Családi Életérzés (3 Kártya) -->
+        <div style="margin-bottom: 4rem;">
+            <h2 class="ad-section-title">Miért a Nordic Family a tökéletes választás?</h2>
+            <p class="ad-section-lead">
+                A skandináv építészet legjavát ötvöztük a modern magyar családok igényeivel: rengeteg természetes fény,
+                energiatakarékosság és tiszta, funkcionális terek.
+            </p>
+
+            <div class="features-grid-ad">
+                <div class="feature-card-ad">
+                    <div class="feature-card-icon">🌅</div>
+                    <h3>Panorámás Nappali & Teraszkapcsolat</h3>
+                    <p>
+                        A 42 m²-es egybefüggő amerikai konyhás nappali 3 méteres padlótól mennyezetig érő üvegfalakkal
+                        rendelkezik. A hatalmas tolóajtókon át az élettér közvetlenül kibővül a 38 m²-es fedett kerti
+                        teraszra.
+                    </p>
+                </div>
+
+                <div class="feature-card-ad">
+                    <div class="feature-card-icon">🧘</div>
+                    <h3>Különválasztott Szülői Intimitás</h3>
+                    <p>
+                        Az átgondolt alaprajz a szülői hálószobát saját gardróbbal és prémium fürdőszobával a csendes
+                        kerti szárnyba helyezi, teljesen szeparálva a gyerekszobáktól és a forgalmas közösségi terektől.
+                    </p>
+                </div>
+
+                <div class="feature-card-ad">
+                    <div class="feature-card-icon">🔋</div>
+                    <h3>Közel Nulla Rezsi & A+ Energetika</h3>
+                    <p>
+                        30 cm-es modern téglafalazat 15 cm grafitos hőszigeteléssel, 3 rétegű thermo nyílászárók,
+                        mennyezeti hűtés-fűtés előkészítés, és a tetőn 8 db integrált napelem optimális dél-déli
+                        tájolással.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. Helyiséglista & Műszaki Paraméterek -->
+        <div class="specs-and-rooms-container">
+            <!-- Helyiséglista Táblázat -->
+            <div class="table-card-ad">
+                <h3>📐 Helyiséglista & Alapterületek</h3>
+                <table class="room-table">
+                    <thead>
+                        <tr>
+                            <th>Helyiség Megnevezése</th>
+                            <th style="text-align: right;">Nettó Terület</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Nappali + Étkező</td>
+                            <td class="room-area">41.8 m²</td>
+                        </tr>
+                        <tr>
+                            <td>Konyha & Kamra</td>
+                            <td class="room-area">10.5 m²</td>
+                        </tr>
+                        <tr>
+                            <td>Szülői Hálószoba (Master)</td>
+                            <td class="room-area">16.2 m²</td>
+                        </tr>
+                        <tr>
+                            <td>Szülői Gardrób</td>
+                            <td class="room-area">5.4 m²</td>
+                        </tr>
+                        <tr>
+                            <td>Gyerekszoba 1</td>
+                            <td class="room-area">12.6 m²</td>
+                        </tr>
+                        <tr>
+                            <td>Gyerekszoba 2</td>
+                            <td class="room-area">12.4 m²</td>
+                        </tr>
+                        <tr>
+                            <td>Vendégszoba / Dolgozó</td>
+                            <td class="room-area">10.8 m²</td>
+                        </tr>
+                        <tr>
+                            <td>Családi Fürdőszoba (kád + zuhany)</td>
+                            <td class="room-area">7.8 m²</td>
+                        </tr>
+                        <tr>
+                            <td>Szülői Fürdőszoba</td>
+                            <td class="room-area">5.2 m²</td>
+                        </tr>
+                        <tr>
+                            <td>Előtér & Közlekedő</td>
+                            <td class="room-area">11.5 m²</td>
+                        </tr>
+                        <tr>
+                            <td>Gépészet & Háztartási helyiség</td>
+                            <td class="room-area">5.8 m²</td>
+                        </tr>
+                        <tr>
+                            <td>Vendég WC</td>
+                            <td class="room-area">2.2 m²</td>
+                        </tr>
+                        <tr>
+                            <td>Dupla Garázs (fűtött, szekcionált)</td>
+                            <td class="room-area">36.0 m²</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td>Összes Hasznos Beltéri Terület:</td>
+                            <td class="room-area">150.0 m²</td>
+                        </tr>
+                        <tr>
+                            <td>+ Fedett Kerti Terasz:</td>
+                            <td class="room-area">+ 38.0 m²</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <!-- Műszaki Paraméterek -->
+            <div class="table-card-ad">
+                <h3>⚙️ Főbb Műszaki Paraméterek</h3>
+                <div class="tech-spec-list">
+                    <div class="tech-spec-row">
+                        <span>Épület Jellege:</span>
+                        <span>Földszintes szabadonálló családi ház</span>
+                    </div>
+                    <div class="tech-spec-row">
+                        <span>Bruttó Beépített Terület:</span>
+                        <span>218.4 m²</span>
+                    </div>
+                    <div class="tech-spec-row">
+                        <span>Tető Típusa & Hajlásszöge:</span>
+                        <span>Nyeregtető + Lapostető (26° / 2°)</span>
+                    </div>
+                    <div class="tech-spec-row">
+                        <span>Tetőfedés:</span>
+                        <span>Antracit állókorcos fémlemez</span>
+                    </div>
+                    <div class="tech-spec-row">
+                        <span>Főfalak:</span>
+                        <span>30 cm Porotherm X-Therm téglafalazat</span>
+                    </div>
+                    <div class="tech-spec-row">
+                        <span>Homlokzati Hőszigetelés:</span>
+                        <span>15 cm grafitos EPS + vörösfenyő lamellák</span>
+                    </div>
+                    <div class="tech-spec-row">
+                        <span>Födémszerkezet:</span>
+                        <span>Monolit vasbeton födém 30 cm szigeteléssel</span>
+                    </div>
+                    <div class="tech-spec-row">
+                        <span>Nyílászárók:</span>
+                        <span>3 rétegű prémium melegperemes thermo üvegezés</span>
+                    </div>
+                    <div class="tech-spec-row">
+                        <span>Fűtési Rendszer:</span>
+                        <span>Levegő-víz hőszivattyú padlófűtéssel</span>
+                    </div>
+                    <div class="tech-spec-row">
+                        <span>Szellőztetés:</span>
+                        <span>Központi hővisszanyerős szellőztető előkészítés</span>
+                    </div>
+                    <div class="tech-spec-row">
+                        <span>Megújuló Energia:</span>
+                        <span>8 kWp tetőtéri napelem-előkészítés</span>
+                    </div>
+                    <div class="tech-spec-row">
+                        <span>Engedélyezés:</span>
+                        <span>Egyszerű bejelentési eljáráshoz azonnal alkalmas</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 7. Kivitelezési Promóciós Banner (Térmágus Kft.) -->
+        <div class="partner-ad-banner">
+            <div class="partner-ad-info">
+                <span class="tag"
+                    style="background: rgba(255, 84, 77, 0.1); color: var(--primary-color); border-color: rgba(255, 84, 77, 0.25); font-weight: 600; margin-bottom: 0.8rem; display: inline-block;">
+                    ✦ Hivatalos Kivitelező Partner
+                </span>
+                <h3>Szeretnéd, hogy a tervből kulcsrakész otthon legyen?</h3>
+                <p>
+                    A <strong>Térmágus Kft.</strong> fix áras szerződéssel, garantált határidővel és több évtizedes
+                    szakmai tapasztalattal vállalja a Nordic Family villa teljes körű generálkivitelezését az
+                    alapozástól a beköltözésig.
+                </p>
+                <div class="partner-features-pills">
+                    <span class="partner-pill">⏱️ 6-8 Hónap Átlagos Átadási Idő</span>
+                    <span class="partner-pill">📄 Fix Áras Szerződés Rejtett Költségek Nélkül</span>
+                    <span class="partner-pill">🛡️ 10 Év Szerkezeti Garancia</span>
+                </div>
+            </div>
+            <div>
+                <a href="megvalositas.html" class="btn-primary"
+                    style="padding: 1rem 2rem; font-size: 1rem; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+                    Megvalósítás Részletei &rarr;
+                </a>
+            </div>
+        </div>
+
+        <!-- 8. Gyakori Kérdések a Tervről (FAQ) -->
+        <div class="ad-faq-section">
+            <h2 class="ad-section-title">Gyakran Ismételt Kérdések a Nordic Family Tervről</h2>
+            <p class="ad-section-lead">Minden fontos információ a tervvásárlásról, engedélyezésről és kivitelezésről.
+            </p>
+
+            <div class="ad-faq-grid">
+                <div class="ad-faq-item">
+                    <h4>❓ Módosítható-e az alaprajz a saját igényeinkre?</h4>
+                    <p>
+                        Természetesen! Mérnökcsapatunk a Térmágus Kft.-vel együttműködve a telek adottságaihoz,
+                        tájolásához vagy a család egyedi igényeihez igazítja a falakat, ablakméreteket és elrendezést.
+                    </p>
+                </div>
+                <div class="ad-faq-item">
+                    <h4>❓ Mennyi idő alatt kapom meg a terveket?</h4>
+                    <p>
+                        A digitális csomagot (PDF tervlapok, szerkeszthető CAD/DWG állományok, költségvetési kiírás) a
+                        sikeres fizetést követően azonnal letöltheted. Az 5 darab pecsételt, nyomtatott
+                        tervdokumentációt 3 munkanapon belül díjmentesen kiszállítjuk.
+                    </p>
+                </div>
+                <div class="ad-faq-item">
+                    <h4>❓ Alkalmas-e a terv a CSOK Plusz és támogatások igénylésére?</h4>
+                    <p>
+                        Igen, a Nordic Family tervdokumentáció maradéktalanul megfelel a hatályos OTÉK előírásoknak, az
+                        A+ energetikai követelményeknek, így azonnal alkalmas CSOK Plusz és zöld hitelek igénylésére.
+                    </p>
+                </div>
+                <div class="ad-faq-item">
+                    <h4>❓ Segítenek-e a hatósági egyszerű bejelentésben?</h4>
+                    <p>
+                        Igen! Ha a Térmágus Kft.-vel építteted fel az otthonodat, a teljes engedélyezési és egyszerű
+                        bejelentési eljárást, a felelős műszaki vezetést és a használatbavételi engedély intézését is
+                        átvállalják.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Lábléc (Footer) -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <a href="../index.html" class="logo" style="margin-bottom: 1rem; display: inline-flex;"
+                        aria-label="HomeVision Főoldal">
+                        <img src="../images/logo.png" alt="HomeVision" class="logo-img logo-light">
+                        <img src="../images/logo-dark.png" alt="HomeVision" class="logo-img logo-dark">
+                    </a>
+                    <p class="footer-desc" data-i18n="footer_desc">
+                        Prémium minőségű, azonnal megvásárolható és építhető modern családi háztervek tervezőirodája.
+                    </p>
+                </div>
+
+                <div class="footer-col">
+                    <h4 class="footer-heading" data-i18n="footer_company_info">Hivatalos Cégadatok</h4>
+                    <ul class="footer-info-list">
+                        <li><strong>Cégnév:</strong> Home Vision Kft.</li>
+                        <li><strong data-i18n="footer_hq">Székhely:</strong> 1054 Budapest, Szabadság tér 7.</li>
+                        <li><strong data-i18n="footer_tax">Adószám:</strong> 28741923-2-41</li>
+                        <li><strong data-i18n="footer_reg">Cégjegyzékszám:</strong> 01-09-389142</li>
+                        <li><strong data-i18n="footer_bank">Bankszámla:</strong> 11705008-20451829 (OTP)</li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4 class="footer-heading" data-i18n="footer_quicklinks">Gyorslinkek</h4>
+                    <ul class="footer-links">
+                        <li><a href="../index.html" data-i18n="home">Főoldal</a></li>
+                        <li><a href="tervek.html" class="active" data-i18n="plans">Tervek</a></li>
+                        <li><a href="megvalositas.html" data-i18n="implementation">Megvalósítás</a></li>
+                        <li><a href="media.html" data-i18n="media">Média</a></li>
+                        <li><a href="rolunk.html" data-i18n="about">Rólunk</a></li>
+                        <li><a href="kapcsolat.html" data-i18n="contact">Kapcsolat</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4 class="footer-heading" data-i18n="footer_contact">Elérhetőségek</h4>
+                    <ul class="footer-info-list">
+                        <li>📞 <a href="tel:+3612345678">+36 (1) 234-5678</a></li>
+                        <li>📱 <a href="tel:+36309876543">+36 (30) 987-6543</a></li>
+                        <li>✉️ <a href="mailto:info@homevision.hu">info@homevision.hu</a></li>
+                        <li>🕒 <span data-i18n="footer_hours">H-P: 09:00 - 17:00</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p data-i18n="footer_rights">© 2026 Home Vision Kft. Minden jog fenntartva.</p>
+                <p class="footer-credit" style="font-size: 0.78rem; opacity: 0.55; margin-top: 6px;"
+                    data-i18n="footer_credit">Web oldalt készítette:Katona Ruben(Térmágus KFT.)</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login / Vásárlás Modal -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2 id="modalTitle">Tervdokumentáció Vásárlása</h2>
+            <p style="font-size: 0.88rem; opacity: 0.8; margin: 8px 0 16px;">
+                Add meg az adataidat a letöltési link azonnali elküldéséhez és a hivatalos számlázáshoz:
+            </p>
+            <form id="authForm">
+                <input type="text" placeholder="Teljes Név" required>
+                <input type="email" placeholder="Email Cím (ide érkezik a letöltés)" required>
+                <input type="tel" placeholder="Telefonszám (futárszolgálathoz)" required>
+                <button type="submit" class="btn-primary auth-submit">Tovább a Biztonságos Fizetéshez (350.000
+                    Ft)</button>
+            </form>
+            <p class="switch-auth" style="font-size: 0.82rem; opacity: 0.75;">
+                🔒 256 bites SSL biztonság • 100% Pénzvisszafizetési és Engedélyezési Garancia
+            </p>
+        </div>
+    </div>
+
+    <!-- Weboldal Alap Script -->
+    <script src="../js/script.js"></script>
+
+    <!-- Tab Váltás Script (3D / Galéria / Alaprajz) -->
+    <script>
+        function switchViewerTab(tabName) {
+            const v3D = document.getElementById('view3DContainer');
+            const vGal = document.getElementById('viewGalleryContainer');
+            const vPlan = document.getElementById('viewFloorplanContainer');
+            const b3D = document.getElementById('tab3dBtn');
+            const bGal = document.getElementById('tabGalleryBtn');
+            const bPlan = document.getElementById('tabFloorplanBtn');
+            const statusTxt = document.getElementById('viewerStatusText');
+
+            [b3D, bGal, bPlan].forEach(b => b.classList.remove('active'));
+            [v3D, vGal, vPlan].forEach(v => v.classList.remove('active'));
+
+            if (tabName === '3d') {
+                v3D.style.display = 'block';
+                vGal.classList.remove('active');
+                vPlan.classList.remove('active');
+                b3D.classList.add('active');
+                if (statusTxt) statusTxt.textContent = 'Valós idejű 3D nézet';
+                if (window.on3DResize) window.on3DResize();
+            } else if (tabName === 'gallery') {
+                v3D.style.display = 'none';
+                vGal.classList.add('active');
+                vPlan.classList.remove('active');
+                bGal.classList.add('active');
+                if (statusTxt) statusTxt.textContent = 'Nagyfelbontású látványtervek';
+            } else if (tabName === 'floorplan') {
+                v3D.style.display = 'none';
+                vGal.classList.remove('active');
+                vPlan.classList.add('active');
+                bPlan.classList.add('active');
+                if (statusTxt) statusTxt.textContent = 'Méretezett építészeti alaprajz';
+            }
+        }
+
+        function setGalleryImage(thumbEl, imgSrc) {
+            document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
+            thumbEl.classList.add('active');
+            const mainImg = document.getElementById('mainGalleryImage');
+            if (mainImg) mainImg.src = imgSrc;
+        }
+    </script>
+
+    <!-- ==========================================================================
+         RÉSZLETES, GAZDAG 3D SKANDINÁV VILLA MODELL (Three.js)
+         ========================================================================== -->
+    <script>
+        (function () {
+            const container = document.getElementById('3d-container');
+            if (!container) return;
+
+            // 1. Színtér & Kamera & Renderer
+            const scene = new THREE.Scene();
+            const initAspect = container.clientWidth / container.clientHeight;
+            const isMobileView = initAspect < 1.15;
+
+            const camera = new THREE.PerspectiveCamera(isMobileView ? 54 : 45, initAspect, 0.1, 1000);
+            if (isMobileView) {
+                camera.position.set(13.5, 10.5, 15.5);
+            } else {
+                camera.position.set(11, 8.5, 12.5);
+            }
+
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            container.appendChild(renderer.domElement);
+
+            // OrbitControls
+            const controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.06;
+            controls.autoRotate = true;
+            controls.autoRotateSpeed = 0.8;
+            controls.target.set(0.5, 1.3, 0);
+            controls.maxPolarAngle = Math.PI / 2 - 0.05; // Föld alá nem engedjük
+            controls.minDistance = isMobileView ? 6 : 5;
+            controls.maxDistance = isMobileView ? 45 : 32;
+
+            // 2. Anyagok (Materials)
+            const matWhiteWall = new THREE.MeshStandardMaterial({ color: 0xf5f6f8, roughness: 0.85 });
+            const matWarmWood = new THREE.MeshStandardMaterial({ color: 0xaa6c39, roughness: 0.65 });
+            const matDarkPanel = new THREE.MeshStandardMaterial({ color: 0x2b303a, roughness: 0.5 });
+            const matRoofAntracite = new THREE.MeshStandardMaterial({ color: 0x1e232a, roughness: 0.35, metalness: 0.25 });
+            const matSolarPanel = new THREE.MeshStandardMaterial({ color: 0x142850, roughness: 0.2, metalness: 0.85 });
+            const matGlass = new THREE.MeshStandardMaterial({ color: 0x88c0d0, transparent: true, opacity: 0.45, roughness: 0.1, metalness: 0.1 });
+            const matDoor = new THREE.MeshStandardMaterial({ color: 0x1c1e22, roughness: 0.4 });
+            const matConcrete = new THREE.MeshStandardMaterial({ color: 0xc4c7cc, roughness: 0.9 });
+            const matDriveway = new THREE.MeshStandardMaterial({ color: 0x8c919a, roughness: 0.85 });
+            const matLawn = new THREE.MeshStandardMaterial({ color: 0x41783e, roughness: 0.95 });
+            const matTerraceWood = new THREE.MeshStandardMaterial({ color: 0xb57c4c, roughness: 0.7 });
+            const matPineFoliage = new THREE.MeshStandardMaterial({ color: 0x1e4620, roughness: 0.9 });
+            const matTrunk = new THREE.MeshStandardMaterial({ color: 0x4a2e18, roughness: 0.9 });
+            const matHedge = new THREE.MeshStandardMaterial({ color: 0x2e6629, roughness: 0.9 });
+            const matInteriorFloor = new THREE.MeshStandardMaterial({ color: 0xd6b588, roughness: 0.8 });
+            const matInteriorWall = new THREE.MeshStandardMaterial({ color: 0xe2e5e9, roughness: 0.9 });
+            const matFurniture = new THREE.MeshStandardMaterial({ color: 0x5a6577, roughness: 0.8 });
+
+            // Fő Csoportok
+            const worldGroup = new THREE.Group();
+            const houseGroup = new THREE.Group();
+            const roofGroup = new THREE.Group();
+            const interiorGroup = new THREE.Group();
+            const landscapeGroup = new THREE.Group();
+
+            // -------------------------------------------------------------
+            // A) KÖRNYEZET, TELEK, ALAPOZÁS & TERASZ
+            // -------------------------------------------------------------
+            // Fű / Telek
+            const lawnGeo = new THREE.BoxGeometry(20, 0.35, 17);
+            const lawn = new THREE.Mesh(lawnGeo, matLawn);
+            lawn.position.y = -0.175;
+            lawn.receiveShadow = true;
+            landscapeGroup.add(lawn);
+
+            // Beton alapozás
+            const foundationGeo = new THREE.BoxGeometry(12.4, 0.25, 10.2);
+            const foundation = new THREE.Mesh(foundationGeo, matConcrete);
+            foundation.position.set(0.2, 0.125, 0);
+            foundation.receiveShadow = true;
+            landscapeGroup.add(foundation);
+
+            // Kocsibeálló a garázs előtt
+            const drivewayGeo = new THREE.BoxGeometry(5.2, 0.05, 4.8);
+            const driveway = new THREE.Mesh(drivewayGeo, matDriveway);
+            driveway.position.set(-3.2, 0.03, 5.8);
+            driveway.receiveShadow = true;
+            landscapeGroup.add(driveway);
+
+            // Járdakövek a bejárathoz
+            const pathGeo = new THREE.BoxGeometry(1.6, 0.05, 4.2);
+            const path = new THREE.Mesh(pathGeo, matConcrete);
+            path.position.set(0.6, 0.03, 5.5);
+            path.receiveShadow = true;
+            landscapeGroup.add(path);
+
+            // Kerti Fa Terasz (Hátsó kert)
+            const deckGeo = new THREE.BoxGeometry(6.6, 0.12, 3.8);
+            const deck = new THREE.Mesh(deckGeo, matTerraceWood);
+            deck.position.set(1.6, 0.28, -4.6);
+            deck.receiveShadow = true;
+            landscapeGroup.add(deck);
+
+            // Terasz Pergola (4 oszlop + 7 lamella)
+            const pergolaGroup = new THREE.Group();
+            const postGeo = new THREE.BoxGeometry(0.12, 2.6, 0.12);
+            const postPositions = [
+                [-1.5, 1.45, -6.3], [4.7, 1.45, -6.3],
+                [-1.5, 1.45, -2.9], [4.7, 1.45, -2.9]
+            ];
+            postPositions.forEach(pos => {
+                const p = new THREE.Mesh(postGeo, matDarkPanel);
+                p.position.set(pos[0], pos[1], pos[2]);
+                p.castShadow = true;
+                pergolaGroup.add(p);
+            });
+
+            // Pergola lamellák
+            const louverGeo = new THREE.BoxGeometry(6.6, 0.12, 0.08);
+            for (let i = 0; i < 7; i++) {
+                const l = new THREE.Mesh(louverGeo, matWarmWood);
+                l.position.set(1.6, 2.75, -2.9 - (i * 0.55));
+                l.castShadow = true;
+                pergolaGroup.add(l);
+            }
+
+            // Kerti asztal és padok a teraszon
+            const tableGeo = new THREE.BoxGeometry(1.6, 0.7, 0.9);
+            const table = new THREE.Mesh(tableGeo, matDarkPanel);
+            table.position.set(1.6, 0.65, -4.6);
+            table.castShadow = true;
+            pergolaGroup.add(table);
+
+            const benchGeo = new THREE.BoxGeometry(1.6, 0.42, 0.35);
+            const bench1 = new THREE.Mesh(benchGeo, matWarmWood);
+            bench1.position.set(1.6, 0.45, -3.85);
+            bench1.castShadow = true;
+            pergolaGroup.add(bench1);
+
+            const bench2 = new THREE.Mesh(benchGeo, matWarmWood);
+            bench2.position.set(1.6, 0.45, -5.35);
+            bench2.castShadow = true;
+            pergolaGroup.add(bench2);
+
+            landscapeGroup.add(pergolaGroup);
+
+            // -------------------------------------------------------------
+            // B) ÉPÜLET SZERKEZETE
+            // -------------------------------------------------------------
+            // 1. Fő Nappali Pavilon (Nappali, étkező, konyha)
+            const mainBodyGeo = new THREE.BoxGeometry(6.2, 2.7, 5.4);
+            const mainBody = new THREE.Mesh(mainBodyGeo, matWhiteWall);
+            mainBody.position.set(1.6, 1.6, -0.6);
+            mainBody.castShadow = true;
+            mainBody.receiveShadow = true;
+            houseGroup.add(mainBody);
+
+            // Skandináv fa lamellás kiemelés a terasz felőli és homlokzati falon
+            const woodAccentGeo = new THREE.BoxGeometry(2.4, 2.72, 0.1);
+            const woodAccent = new THREE.Mesh(woodAccentGeo, matWarmWood);
+            woodAccent.position.set(3.4, 1.6, 2.12);
+            houseGroup.add(woodAccent);
+
+            const woodAccentBack = new THREE.Mesh(woodAccentGeo, matWarmWood);
+            woodAccentBack.position.set(-0.2, 1.6, -3.32);
+            houseGroup.add(woodAccentBack);
+
+            // Hatalmas Panoráma Üvegfal a teraszra
+            const glassWallGeo = new THREE.BoxGeometry(3.6, 2.3, 0.08);
+            const glassWall = new THREE.Mesh(glassWallGeo, matGlass);
+            glassWall.position.set(2.8, 1.45, -3.32);
+            houseGroup.add(glassWall);
+
+            // Üvegfal fekete kerete / osztásai
+            const frameGeoH = new THREE.BoxGeometry(3.7, 0.08, 0.12);
+            const frameTop = new THREE.Mesh(frameGeoH, matDarkPanel);
+            frameTop.position.set(2.8, 2.6, -3.32);
+            houseGroup.add(frameTop);
+
+            const frameBottom = new THREE.Mesh(frameGeoH, matDarkPanel);
+            frameBottom.position.set(2.8, 0.3, -3.32);
+            houseGroup.add(frameBottom);
+
+            const frameGeoV = new THREE.BoxGeometry(0.08, 2.3, 0.12);
+            for (let k = 0; k <= 3; k++) {
+                const fv = new THREE.Mesh(frameGeoV, matDarkPanel);
+                fv.position.set(1.0 + (k * 1.2), 1.45, -3.32);
+                houseGroup.add(fv);
+            }
+
+            // 2. Hálószoba Szárny (Master háló, 2 gyerekszoba, fürdők)
+            const bedWingGeo = new THREE.BoxGeometry(4.8, 2.5, 4.4);
+            const bedWing = new THREE.Mesh(bedWingGeo, matWhiteWall);
+            bedWing.position.set(4.4, 1.5, 1.1);
+            bedWing.castShadow = true;
+            bedWing.receiveShadow = true;
+            houseGroup.add(bedWing);
+
+            // Hálószoba lapostető szegély (attika)
+            const bedRoofTrimGeo = new THREE.BoxGeometry(5.0, 0.18, 4.6);
+            const bedRoofTrim = new THREE.Mesh(bedRoofTrimGeo, matDarkPanel);
+            bedRoofTrim.position.set(4.4, 2.8, 1.1);
+            bedRoofTrim.castShadow = true;
+            houseGroup.add(bedRoofTrim);
+
+            // Hálószobai ablakok (szalagablak)
+            const bedWinGeo = new THREE.BoxGeometry(3.2, 1.1, 0.08);
+            const bedWin = new THREE.Mesh(bedWinGeo, matGlass);
+            bedWin.position.set(4.4, 1.8, 3.32);
+            houseGroup.add(bedWin);
+
+            const bedWinFrame = new THREE.Mesh(new THREE.BoxGeometry(3.3, 1.2, 0.05), matDarkPanel);
+            bedWinFrame.position.set(4.4, 1.8, 3.31);
+            houseGroup.add(bedWinFrame);
+
+            // 3. Dupla Garázs (36 m²)
+            const garageGeo = new THREE.BoxGeometry(4.6, 2.4, 5.0);
+            const garage = new THREE.Mesh(garageGeo, matDarkPanel);
+            garage.position.set(-3.2, 1.45, 1.8);
+            garage.castShadow = true;
+            garage.receiveShadow = true;
+            houseGroup.add(garage);
+
+            // 2 Szekcionált garázskapu
+            const gDoorGeo = new THREE.BoxGeometry(1.9, 1.9, 0.06);
+            const gDoor1 = new THREE.Mesh(gDoorGeo, new THREE.MeshStandardMaterial({ color: 0x1f242b, roughness: 0.4 }));
+            gDoor1.position.set(-4.2, 1.2, 4.32);
+            houseGroup.add(gDoor1);
+
+            const gDoor2 = new THREE.Mesh(gDoorGeo, new THREE.MeshStandardMaterial({ color: 0x1f242b, roughness: 0.4 }));
+            gDoor2.position.set(-2.1, 1.2, 4.32);
+            houseGroup.add(gDoor2);
+
+            // Garázs LED világító sáv
+            const garageLedGeo = new THREE.BoxGeometry(4.3, 0.06, 0.06);
+            const matLed = new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0xffffff, emissiveIntensity: 0.8 });
+            const garageLed = new THREE.Mesh(garageLedGeo, matLed);
+            garageLed.position.set(-3.15, 2.25, 4.33);
+            houseGroup.add(garageLed);
+
+            // Főbejárat és Fedett Előtér
+            const entryCanopyGeo = new THREE.BoxGeometry(2.0, 0.12, 1.6);
+            const entryCanopy = new THREE.Mesh(entryCanopyGeo, matWarmWood);
+            entryCanopy.position.set(0.6, 2.45, 3.0);
+            entryCanopy.castShadow = true;
+            houseGroup.add(entryCanopy);
+
+            const frontDoorGeo = new THREE.BoxGeometry(1.1, 2.1, 0.08);
+            const frontDoor = new THREE.Mesh(frontDoorGeo, matDoor);
+            frontDoor.position.set(0.6, 1.3, 2.12);
+            houseGroup.add(frontDoor);
+
+            // Hosszú modern rozsdamentes acél kilincs
+            const handleGeo = new THREE.BoxGeometry(0.04, 1.0, 0.04);
+            const handle = new THREE.Mesh(handleGeo, new THREE.MeshStandardMaterial({ color: 0xffffff, metalness: 0.9, roughness: 0.1 }));
+            handle.position.set(0.95, 1.3, 2.18);
+            houseGroup.add(handle);
+
+            // -------------------------------------------------------------
+            // C) SKANDINÁV NYEREGTETŐ (roofGroup - Kiemelhető / Levehető)
+            // -------------------------------------------------------------
+            // Bal oldali tetősík (26 fokos dőlés)
+            const roofSlopeGeo = new THREE.BoxGeometry(3.6, 0.16, 5.8);
+
+            const roofLeft = new THREE.Mesh(roofSlopeGeo, matRoofAntracite);
+            roofLeft.position.set(0.1, 3.55, -0.6);
+            roofLeft.rotation.z = 0.44; // ~25 fok
+            roofLeft.castShadow = true;
+            roofGroup.add(roofLeft);
+
+            // Jobb oldali tetősík
+            const roofRight = new THREE.Mesh(roofSlopeGeo, matRoofAntracite);
+            roofRight.position.set(3.1, 3.55, -0.6);
+            roofRight.rotation.z = -0.44;
+            roofRight.castShadow = true;
+            roofGroup.add(roofRight);
+
+            // Tető gerinc fedőbádog
+            const ridgeGeo = new THREE.BoxGeometry(0.25, 0.18, 5.85);
+            const ridge = new THREE.Mesh(ridgeGeo, matRoofAntracite);
+            ridge.position.set(1.6, 4.3, -0.6);
+            roofGroup.add(ridge);
+
+            // Háromszög oromfalak elöl és hátul
+            const gableShape = new THREE.Shape();
+            gableShape.moveTo(-3.1, 0);
+            gableShape.lineTo(0, 1.4);
+            gableShape.lineTo(3.1, 0);
+            gableShape.closePath();
+
+            const extrudeSettings = { depth: 0.12, bevelEnabled: false };
+            const gableFrontGeo = new THREE.ExtrudeGeometry(gableShape, extrudeSettings);
+
+            const gableFront = new THREE.Mesh(gableFrontGeo, matWarmWood);
+            gableFront.position.set(1.6, 2.9, 2.05);
+            roofGroup.add(gableFront);
+
+            const gableBack = new THREE.Mesh(gableFrontGeo, matWarmWood);
+            gableBack.position.set(1.6, 2.9, -3.37);
+            roofGroup.add(gableBack);
+
+            // Modern Kémény
+            const chimneyGeo = new THREE.BoxGeometry(0.5, 1.4, 0.5);
+            const chimney = new THREE.Mesh(chimneyGeo, matDarkPanel);
+            chimney.position.set(0.6, 4.2, -1.8);
+            chimney.castShadow = true;
+            roofGroup.add(chimney);
+
+            const chimneyCap = new THREE.Mesh(new THREE.BoxGeometry(0.65, 0.08, 0.65), matDarkPanel);
+            chimneyCap.position.set(0.6, 4.95, -1.8);
+            roofGroup.add(chimneyCap);
+
+            // Napelemek (8 db modern fotovoltaikus panel a déli tetősíkon)
+            const panelGeo = new THREE.BoxGeometry(0.95, 0.04, 1.3);
+            for (let r = 0; r < 2; r++) {
+                for (let c = 0; c < 4; c++) {
+                    const sp = new THREE.Mesh(panelGeo, matSolarPanel);
+                    sp.position.set(2.4 + (r * 0.9), 3.5 + (r * 0.4), -2.4 + (c * 1.3));
+                    sp.rotation.z = -0.44;
+                    roofGroup.add(sp);
+                }
+            }
+
+            houseGroup.add(roofGroup);
+
+            // -------------------------------------------------------------
+            // D) BELSŐ ALAPRAJZ ÉS BÚTOROK (interiorGroup)
+            // -------------------------------------------------------------
+            // Parketta aljzat
+            const floorGeo = new THREE.BoxGeometry(10.5, 0.04, 7.8);
+            const intFloor = new THREE.Mesh(floorGeo, matInteriorFloor);
+            intFloor.position.set(1.5, 0.28, -0.2);
+            interiorGroup.add(intFloor);
+
+            // Belső válaszfalak
+            const wallHGeo = new THREE.BoxGeometry(4.4, 2.2, 0.12);
+            const wall1 = new THREE.Mesh(wallHGeo, matInteriorWall);
+            wall1.position.set(1.6, 1.4, 0.5);
+            interiorGroup.add(wall1);
+
+            const wallVGeo = new THREE.BoxGeometry(0.12, 2.2, 4.0);
+            const wall2 = new THREE.Mesh(wallVGeo, matInteriorWall);
+            wall2.position.set(3.8, 1.4, 1.2);
+            interiorGroup.add(wall2);
+
+            const wall3 = new THREE.Mesh(new THREE.BoxGeometry(0.12, 2.2, 3.2), matInteriorWall);
+            wall3.position.set(-0.6, 1.4, -0.6);
+            interiorGroup.add(wall3);
+
+            // Bútorok: Konyhasziget
+            const kitchenIsland = new THREE.Mesh(new THREE.BoxGeometry(2.0, 0.9, 0.8), matDarkPanel);
+            kitchenIsland.position.set(0.8, 0.75, -1.8);
+            interiorGroup.add(kitchenIsland);
+
+            // Bútorok: Nappali kanapé L-alak
+            const sofaGeo1 = new THREE.BoxGeometry(2.2, 0.65, 0.85);
+            const sofa1 = new THREE.Mesh(sofaGeo1, matFurniture);
+            sofa1.position.set(3.4, 0.6, -1.2);
+            interiorGroup.add(sofa1);
+
+            const sofaGeo2 = new THREE.BoxGeometry(0.85, 0.65, 1.4);
+            const sofa2 = new THREE.Mesh(sofaGeo2, matFurniture);
+            sofa2.position.set(2.4, 0.6, -0.6);
+            interiorGroup.add(sofa2);
+
+            // Bútorok: Szülői franciaágy
+            const bedGeo = new THREE.BoxGeometry(1.9, 0.5, 1.7);
+            const bed = new THREE.Mesh(bedGeo, new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.8 }));
+            bed.position.set(5.2, 0.55, 1.2);
+            interiorGroup.add(bed);
+
+            const headboard = new THREE.Mesh(new THREE.BoxGeometry(0.15, 0.9, 1.8), matWarmWood);
+            headboard.position.set(6.1, 0.75, 1.2);
+            interiorGroup.add(headboard);
+
+            houseGroup.add(interiorGroup);
+
+            // -------------------------------------------------------------
+            // E) SKANDINÁV NÖVÉNYZET ÉS KERTÉPÍTÉSZET
+            // -------------------------------------------------------------
+            // 4 db Rétegzett Skandináv Fenyőfa
+            function createPineTree(x, z, scale) {
+                const tree = new THREE.Group();
+                const trunkGeo = new THREE.CylinderGeometry(0.12 * scale, 0.16 * scale, 1.2 * scale, 7);
+                const trunk = new THREE.Mesh(trunkGeo, matTrunk);
+                trunk.position.y = 0.6 * scale;
+                trunk.castShadow = true;
+                tree.add(trunk);
+
+                const c1 = new THREE.Mesh(new THREE.ConeGeometry(1.4 * scale, 1.6 * scale, 7), matPineFoliage);
+                c1.position.y = 1.6 * scale;
+                c1.castShadow = true;
+                tree.add(c1);
+
+                const c2 = new THREE.Mesh(new THREE.ConeGeometry(1.1 * scale, 1.4 * scale, 7), matPineFoliage);
+                c2.position.y = 2.4 * scale;
+                c2.castShadow = true;
+                tree.add(c2);
+
+                const c3 = new THREE.Mesh(new THREE.ConeGeometry(0.75 * scale, 1.2 * scale, 7), matPineFoliage);
+                c3.position.y = 3.1 * scale;
+                c3.castShadow = true;
+                tree.add(c3);
+
+                tree.position.set(x, 0, z);
+                return tree;
+            }
+
+            landscapeGroup.add(createPineTree(-7.5, -5.5, 1.1));
+            landscapeGroup.add(createPineTree(-7.8, -2.2, 0.9));
+            landscapeGroup.add(createPineTree(8.2, -5.8, 1.25));
+            landscapeGroup.add(createPineTree(8.4, 4.5, 0.85));
+
+            // Geometrikus puszpáng sövény a bejárat mellett
+            const hedgeGeo = new THREE.BoxGeometry(0.45, 0.55, 3.4);
+            const hedge = new THREE.Mesh(hedgeGeo, matHedge);
+            hedge.position.set(1.7, 0.3, 5.6);
+            hedge.castShadow = true;
+            landscapeGroup.add(hedge);
+
+            // 4 db Kerti világító oszlop (Bollards)
+            const bollards = [];
+            const bollardPositions = [
+                [-0.4, 5.8], [1.6, 3.8],
+                [5.2, -3.2], [-2.0, -4.8]
+            ];
+            bollardPositions.forEach(bp => {
+                const bGroup = new THREE.Group();
+                const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 0.6), matDarkPanel);
+                pole.position.y = 0.3;
+                bGroup.add(pole);
+
+                const lightCap = new THREE.Mesh(
+                    new THREE.CylinderGeometry(0.06, 0.06, 0.1),
+                    new THREE.MeshStandardMaterial({ color: 0xffe6aa, emissive: 0xff9900, emissiveIntensity: 0.2 })
+                );
+                lightCap.position.y = 0.55;
+                bGroup.add(lightCap);
+
+                const pLight = new THREE.PointLight(0xffaa44, 0, 4);
+                pLight.position.set(0, 0.6, 0);
+                bGroup.add(pLight);
+
+                bGroup.position.set(bp[0], 0, bp[1]);
+                landscapeGroup.add(bGroup);
+                bollards.push({ cap: lightCap, light: pLight });
+            });
+
+            // Házszám oszlop
+            const signPillar = new THREE.Mesh(new THREE.BoxGeometry(0.5, 1.1, 0.3), matDarkPanel);
+            signPillar.position.set(1.8, 0.55, 7.4);
+            landscapeGroup.add(signPillar);
+
+            worldGroup.add(landscapeGroup);
+            worldGroup.add(houseGroup);
+            scene.add(worldGroup);
+
+            // -------------------------------------------------------------
+            // F) MEGVILÁGÍTÁS (LIGHTING)
+            // -------------------------------------------------------------
+            const hemiLight = new THREE.HemisphereLight(0xddeeff, 0x3d4a36, 0.65);
+            scene.add(hemiLight);
+
+            const sunLight = new THREE.DirectionalLight(0xfffaea, 1.35);
+            sunLight.position.set(14, 19, 12);
+            sunLight.castShadow = true;
+            sunLight.shadow.mapSize.width = 2048;
+            sunLight.shadow.mapSize.height = 2048;
+            sunLight.shadow.camera.near = 0.5;
+            sunLight.shadow.camera.far = 50;
+            sunLight.shadow.camera.left = -12;
+            sunLight.shadow.camera.right = 12;
+            sunLight.shadow.camera.top = 12;
+            sunLight.shadow.camera.bottom = -12;
+            sunLight.shadow.bias = -0.0004;
+            scene.add(sunLight);
+
+            // Belső meleg fények (éjszaka ragyognak az ablakokon át!)
+            const interiorLight1 = new THREE.PointLight(0xff9e44, 0.3, 9);
+            interiorLight1.position.set(2.0, 2.1, -1.2);
+            scene.add(interiorLight1);
+
+            const interiorLight2 = new THREE.PointLight(0xffa855, 0.2, 7);
+            interiorLight2.position.set(4.5, 2.0, 1.2);
+            scene.add(interiorLight2);
+
+            // -------------------------------------------------------------
+            // G) INTERAKTÍV VEZÉRLŐK LOGIKÁJA
+            // -------------------------------------------------------------
+            let isRoofLifted = false;
+            let isNightMode = false;
+
+            // 1. Forgatás kapcsoló
+            const btnRotate = document.getElementById('btnToggleRotate');
+            if (btnRotate) {
+                btnRotate.addEventListener('click', () => {
+                    controls.autoRotate = !controls.autoRotate;
+                    btnRotate.classList.toggle('active', controls.autoRotate);
+                });
+            }
+
+            // 2. Tető Levétele / Visszahelyezése
+            const btnRoof = document.getElementById('btnToggleRoof');
+            if (btnRoof) {
+                btnRoof.addEventListener('click', () => {
+                    isRoofLifted = !isRoofLifted;
+                    btnRoof.classList.toggle('active', isRoofLifted);
+                    btnRoof.textContent = isRoofLifted ? '🏠 Tető Vissza' : '🏠 Tető Levétele';
+
+                    let targetY = isRoofLifted ? 5.5 : 0;
+                    animateRoof(targetY);
+                });
+            }
+
+            function animateRoof(targetY) {
+                const startY = roofGroup.position.y;
+                const startTime = performance.now();
+                const duration = 500;
+
+                function step(now) {
+                    const elapsed = now - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const ease = 1 - Math.pow(1 - progress, 3);
+                    roofGroup.position.y = startY + (targetY - startY) * ease;
+                    roofGroup.visible = !(isRoofLifted && progress > 0.95);
+                    if (progress < 1) {
+                        requestAnimationFrame(step);
+                    }
+                }
+                roofGroup.visible = true;
+                requestAnimationFrame(step);
+            }
+
+            // 3. Nappal / Éjszaka Mód
+            const btnDayNight = document.getElementById('btnToggleDayNight');
+            if (btnDayNight) {
+                btnDayNight.addEventListener('click', () => {
+                    isNightMode = !isNightMode;
+                    btnDayNight.classList.toggle('active', isNightMode);
+                    btnDayNight.textContent = isNightMode ? '🌙 Éjszaka' : '☀️ Nappal';
+
+                    if (isNightMode) {
+                        sunLight.intensity = 0.12;
+                        sunLight.color.setHex(0x385588);
+                        hemiLight.intensity = 0.15;
+                        hemiLight.color.setHex(0x1a2638);
+                        interiorLight1.intensity = 2.4;
+                        interiorLight2.intensity = 2.0;
+                        matGlass.color.setHex(0xffbb77);
+                        matGlass.opacity = 0.75;
+                        bollards.forEach(b => {
+                            b.light.intensity = 1.4;
+                            b.cap.material.emissiveIntensity = 1.0;
+                        });
+                    } else {
+                        sunLight.intensity = 1.35;
+                        sunLight.color.setHex(0xfffaea);
+                        hemiLight.intensity = 0.65;
+                        hemiLight.color.setHex(0xddeeff);
+                        interiorLight1.intensity = 0.3;
+                        interiorLight2.intensity = 0.2;
+                        matGlass.color.setHex(0x88c0d0);
+                        matGlass.opacity = 0.45;
+                        bollards.forEach(b => {
+                            b.light.intensity = 0;
+                            b.cap.material.emissiveIntensity = 0.2;
+                        });
+                    }
+                });
+            }
+
+            // 4. Kamera Pozíció Animálás
+            function moveCameraTo(x, y, z, targetX = 0.5, targetY = 1.3, targetZ = 0) {
+                controls.autoRotate = false;
+                if (btnRotate) btnRotate.classList.remove('active');
+
+                const startPos = camera.position.clone();
+                const endPos = new THREE.Vector3(x, y, z);
+                const startTarget = controls.target.clone();
+                const endTarget = new THREE.Vector3(targetX, targetY, targetZ);
+                const startTime = performance.now();
+                const duration = 750;
+
+                function step(now) {
+                    const elapsed = now - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const ease = 1 - Math.pow(1 - progress, 3);
+
+                    camera.position.lerpVectors(startPos, endPos, ease);
+                    controls.target.lerpVectors(startTarget, endTarget, ease);
+                    controls.update();
+
+                    if (progress < 1) {
+                        requestAnimationFrame(step);
+                    }
+                }
+                requestAnimationFrame(step);
+            }
+
+            document.getElementById('btnViewFront')?.addEventListener('click', () => {
+                const mob = (container.clientWidth / container.clientHeight) < 1.15;
+                moveCameraTo(0.5, mob ? 4.2 : 3.6, mob ? 15.5 : 12.5, 0.5, 1.4, 1.0);
+            });
+
+            document.getElementById('btnViewPatio')?.addEventListener('click', () => {
+                const mob = (container.clientWidth / container.clientHeight) < 1.15;
+                moveCameraTo(mob ? 5.8 : 4.5, mob ? 5.2 : 4.2, mob ? -13.5 : -10.5, 1.6, 1.4, -3.5);
+            });
+
+            document.getElementById('btnViewTop')?.addEventListener('click', () => {
+                const mob = (container.clientWidth / container.clientHeight) < 1.15;
+                moveCameraTo(0.5, mob ? 22.5 : 17.5, 0.05, 0.5, 0, 0);
+            });
+
+            document.getElementById('btnResetCamera')?.addEventListener('click', () => {
+                const mob = (container.clientWidth / container.clientHeight) < 1.15;
+                moveCameraTo(mob ? 13.5 : 11, mob ? 10.5 : 8.5, mob ? 15.5 : 12.5, 0.5, 1.3, 0);
+            });
+
+            // -------------------------------------------------------------
+            // H) ANIMÁCIÓS CIKLUS & ÁTMÉRETEZÉS
+            // -------------------------------------------------------------
+            function animate() {
+                requestAnimationFrame(animate);
+                controls.update();
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            window.on3DResize = function () {
+                if (!container) return;
+                const aspect = container.clientWidth / container.clientHeight;
+                const mob = aspect < 1.15;
+                camera.aspect = aspect;
+                camera.fov = mob ? 54 : 45;
+                controls.minDistance = mob ? 6 : 5;
+                controls.maxDistance = mob ? 45 : 32;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container.clientWidth, container.clientHeight);
+            };
+
+            window.addEventListener('resize', window.on3DResize);
+        })();
+    </script>
+</body>
+
+</html>

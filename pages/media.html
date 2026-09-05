@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="hu" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Vision | Média</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        (function () {
+            var theme = localStorage.getItem('homevision_theme');
+            if (theme) document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <!-- ITT VAN AZ ÚJ BEÉPÍTETT LOGÓ -->
+        <a href="../index.html" class="logo" style="display: flex; align-items: center;" aria-label="HomeVision Főoldal">
+            <img src="../images/logo.png" alt="HomeVision" class="logo-img logo-light">
+            <img src="../images/logo-dark.png" alt="HomeVision" class="logo-img logo-dark">
+        </a>
+        <!-- LOGÓ VÉGE -->
+        <ul class="nav-links">
+            <li><a href="../index.html" data-i18n="home">Főoldal</a></li>
+            <li><a href="tervek.html" data-i18n="plans">Tervek</a></li>
+            <li><a href="megvalositas.html" data-i18n="implementation">Megvalósítás</a></li>
+            <li><a href="media.html" class="active" data-i18n="media">Média</a></li>
+            <li><a href="rolunk.html" data-i18n="about">Rólunk</a></li>
+            <li><a href="kapcsolat.html" data-i18n="contact">Kapcsolat</a></li>
+        </ul>
+        <div class="nav-controls">
+            <button id="themeToggle" class="btn-icon" aria-label="Téma váltás">🌓</button>
+            <button id="langToggle" class="btn-text" aria-label="Nyelv váltás">EN</button>
+            <button id="loginBtn" class="btn-primary" data-i18n="login">Bejelentkezés</button>
+            <button id="mobileMenuBtn" class="hamburger-btn" aria-label="Menü megnyitása">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+        </div>
+    </nav>
+    <div class="mobile-nav-backdrop"></div>
+
+    <main class="page-container">
+        <h1 class="page-title" data-i18n="media_title">Már megépült otthonok (Galéria)</h1>
+
+        <div class="media-grid">
+            <div class="media-card">
+                <img src="../images/villa_minimal.jpg" alt="Villa Minimal - Budapest" class="plan-img" style="height: 250px;">
+                <div class="plan-content">
+                    <h2 class="plan-title">Villa Minimal - Budapest</h2>
+                </div>
+            </div>
+            <div class="media-card">
+                <img src="../images/nordic_family.jpg" alt="Nordic Family - Győr" class="plan-img" style="height: 250px;">
+                <div class="plan-content">
+                    <h2 class="plan-title">Nordic Family - Győr</h2>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Lábléc (Footer) -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <!-- 1. Cég bemutatkozás & Logó -->
+                <div class="footer-col">
+                    <a href="../index.html" class="logo" style="margin-bottom: 1rem; display: inline-flex;" aria-label="HomeVision Főoldal">
+                        <img src="../images/logo.png" alt="HomeVision" class="logo-img logo-light">
+                        <img src="../images/logo-dark.png" alt="HomeVision" class="logo-img logo-dark">
+                    </a>
+                    <p class="footer-desc" data-i18n="footer_desc">
+                        Prémium minőségű, azonnal megvásárolható és építhető modern családi háztervek tervezőirodája.
+                    </p>
+                </div>
+
+                <!-- 2. Hivatalos Cégadatok -->
+                <div class="footer-col">
+                    <h4 class="footer-heading" data-i18n="footer_company_info">Hivatalos Cégadatok</h4>
+                    <ul class="footer-info-list">
+                        <li><strong>Cégnév:</strong> Home Vision Kft.</li>
+                        <li><strong data-i18n="footer_hq">Székhely:</strong> 1054 Budapest, Szabadság tér 7.</li>
+                        <li><strong data-i18n="footer_tax">Adószám:</strong> 28741923-2-41</li>
+                        <li><strong data-i18n="footer_reg">Cégjegyzékszám:</strong> 01-09-389142</li>
+                        <li><strong data-i18n="footer_bank">Bankszámla:</strong> 11705008-20451829 (OTP)</li>
+                    </ul>
+                </div>
+
+                <!-- 3. Gyorslinkek -->
+                <div class="footer-col">
+                    <h4 class="footer-heading" data-i18n="footer_quicklinks">Gyorslinkek</h4>
+                    <ul class="footer-links">
+                        <li><a href="../index.html" data-i18n="home">Főoldal</a></li>
+                        <li><a href="tervek.html" data-i18n="plans">Tervek</a></li>
+                        <li><a href="megvalositas.html" data-i18n="implementation">Megvalósítás</a></li>
+                        <li><a href="media.html" data-i18n="media">Média</a></li>
+                        <li><a href="rolunk.html" data-i18n="about">Rólunk</a></li>
+                        <li><a href="kapcsolat.html" data-i18n="contact">Kapcsolat</a></li>
+                    </ul>
+                </div>
+
+                <!-- 4. Kapcsolat & Ügyfélszolgálat -->
+                <div class="footer-col">
+                    <h4 class="footer-heading" data-i18n="footer_contact">Elérhetőségek</h4>
+                    <ul class="footer-info-list">
+                        <li>📞 <a href="tel:+3612345678">+36 (1) 234-5678</a></li>
+                        <li>📱 <a href="tel:+36309876543">+36 (30) 987-6543</a></li>
+                        <li>✉️ <a href="mailto:info@homevision.hu">info@homevision.hu</a></li>
+                        <li>🕒 <span data-i18n="footer_hours">H-P: 09:00 - 17:00</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p data-i18n="footer_rights">© 2026 Home Vision Kft. Minden jog fenntartva.</p>
+                <p class="footer-credit" style="font-size: 0.78rem; opacity: 0.55; margin-top: 6px;" data-i18n="footer_credit">Web oldalt készítette:Katona Ruben(Térmágus KFT.)</p>
+            </div>
+        </div>
+    </footer>
+
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2 id="modalTitle" data-i18n="login_title">Bejelentkezés</h2>
+            <form id="authForm">
+                <input type="email" placeholder="Email cím" required data-i18n-placeholder="email">
+                <input type="password" placeholder="Jelszó" required data-i18n-placeholder="password">
+                <button type="submit" class="btn-primary auth-submit" data-i18n="login_submit">Belépés</button>
+            </form>
+            <p class="switch-auth">
+                <span data-i18n="no_account">Nincs még fiókod?</span>
+                <a href="#" id="switchMode" data-i18n="register_link">Regisztrálj!</a>
+            </p>
+        </div>
+    </div>
+
+    <script src="../js/script.js"></script>
+</body>
+
+</html>
