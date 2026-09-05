@@ -203,8 +203,8 @@ body {
     background-color: var(--text-color);
     border-radius: 2px;
     transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-                opacity 0.25s ease,
-                background-color 0.3s ease;
+        opacity 0.25s ease,
+        background-color 0.3s ease;
 }
 
 /* Hamburger nyitott 'X' állapot */
@@ -237,7 +237,7 @@ body {
     visibility: hidden;
     pointer-events: none;
     transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-                visibility 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        visibility 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     z-index: 98;
 }
 
@@ -1011,6 +1011,7 @@ form input:focus,
     0% {
         transform: translateX(0);
     }
+
     100% {
         transform: translateX(-50%);
     }
@@ -1308,8 +1309,17 @@ form input:focus,
 }
 
 @keyframes pulseDot {
-    0%, 100% { transform: scale(0.9); opacity: 0.8; }
-    50% { transform: scale(1.3); opacity: 1; }
+
+    0%,
+    100% {
+        transform: scale(0.9);
+        opacity: 0.8;
+    }
+
+    50% {
+        transform: scale(1.3);
+        opacity: 1;
+    }
 }
 
 /* 3D Vászon konténer és lebegő eszköztár */
@@ -1988,6 +1998,7 @@ form input:focus,
 
 /* 1. Kisebb laptopok és táblagépek (<= 992px) */
 @media (max-width: 992px) {
+
     /* Mobil Hamburger Menü megjelenítése */
     .hamburger-btn {
         display: flex;
@@ -2014,7 +2025,7 @@ form input:focus,
         opacity: 0;
         pointer-events: none;
         transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-                    opacity 0.3s ease;
+            opacity 0.3s ease;
         z-index: 99;
     }
 
