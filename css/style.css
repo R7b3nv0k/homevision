@@ -2479,3 +2479,370 @@ form input:focus,
         padding: 0.85rem 1rem;
     }
 }
+
+/* ==========================================================================
+   Felső Lebegő Értesítési Sáv (Top Notification Banner / Toast)
+   ========================================================================== */
+.top-notification-banner {
+    position: fixed;
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-130%);
+    width: calc(100% - 32px);
+    max-width: 520px;
+    padding: 14px 20px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    z-index: 999999;
+    opacity: 0;
+    pointer-events: none;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35), 0 0 20px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+    font-family: 'Poppins', sans-serif;
+}
+
+.top-notification-banner.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.top-notification-banner.shake {
+    animation: notifShake 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes notifShake {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    20%, 60% { transform: translateX(calc(-50% - 6px)) translateY(0); }
+    40%, 80% { transform: translateX(calc(-50% + 6px)) translateY(0); }
+}
+
+.top-notification-banner.error {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.96), rgba(185, 28, 28, 0.96));
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 16px 36px rgba(239, 68, 68, 0.35);
+}
+
+.top-notification-banner.success {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.96), rgba(5, 150, 105, 0.96));
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 16px 36px rgba(16, 185, 129, 0.35);
+}
+
+.top-notification-banner.warning {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.96), rgba(217, 119, 6, 0.96));
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 16px 36px rgba(245, 158, 11, 0.35);
+}
+
+.top-notification-banner.info {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.96), rgba(37, 99, 235, 0.96));
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 16px 36px rgba(59, 130, 246, 0.35);
+}
+
+.notif-icon {
+    font-size: 1.6rem;
+    flex-shrink: 0;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.notif-body {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.notif-title {
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.2px;
+}
+
+.notif-message {
+    font-size: 0.88rem;
+    line-height: 1.4;
+    opacity: 0.95;
+    font-weight: 400;
+}
+
+.notif-action-btn {
+    background: rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 6px;
+    align-self: flex-start;
+    transition: background 0.2s ease, transform 0.2s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.notif-action-btn:hover {
+    background: rgba(255, 255, 255, 0.4);
+    transform: translateY(-1px);
+}
+
+.notif-close {
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    font-size: 1.4rem;
+    cursor: pointer;
+    opacity: 0.75;
+    line-height: 1;
+    padding: 4px;
+    border-radius: 6px;
+    flex-shrink: 0;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.notif-close:hover {
+    opacity: 1;
+    transform: scale(1.15);
+}
+
+/* ==========================================================================
+   Auth Dropdown Választó Menü (Bejelentkezés / Regisztráció)
+   ========================================================================== */
+.auth-dropdown-wrapper {
+    position: relative !important;
+    display: inline-flex !important;
+    align-items: center !important;
+}
+
+.auth-choice-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    cursor: pointer !important;
+    font-size: 0.92rem !important;
+    padding: 0.65rem 1.3rem !important;
+    border-radius: 8px !important;
+    border: none !important;
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-hover)) !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 4px 15px rgba(255, 84, 77, 0.25) !important;
+    white-space: nowrap !important;
+    font-family: inherit !important;
+}
+
+.auth-choice-btn:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 6px 20px rgba(255, 84, 77, 0.4) !important;
+}
+
+.auth-btn-arrow {
+    font-size: 0.75rem !important;
+    transition: transform 0.3s ease !important;
+    line-height: 1 !important;
+    display: inline-block !important;
+}
+
+.auth-dropdown-wrapper.open .auth-btn-arrow {
+    transform: rotate(180deg) !important;
+}
+
+.auth-choice-menu {
+    position: absolute !important;
+    top: calc(100% + 10px) !important;
+    right: 0 !important;
+    width: 290px !important;
+    background: var(--nav-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 16px !important;
+    padding: 10px !important;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28), 0 0 25px var(--card-glow) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    display: none;
+    flex-direction: column !important;
+    gap: 6px !important;
+    z-index: 99999 !important;
+}
+
+.auth-dropdown-wrapper.open .auth-choice-menu {
+    display: flex !important;
+    animation: authDropdownFade 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+}
+
+@keyframes authDropdownFade {
+    0% { opacity: 0; transform: translateY(-8px) scale(0.96); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.auth-choice-card,
+.auth-choice-card:link,
+.auth-choice-card:visited,
+.auth-choice-card:focus,
+.auth-choice-card:active {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    padding: 12px 14px !important;
+    border-radius: 12px !important;
+    text-decoration: none !important;
+    color: var(--text-color) !important;
+    background: transparent !important;
+    border: 1px solid transparent !important;
+    transition: all 0.2s ease !important;
+    cursor: pointer !important;
+    font-family: inherit !important;
+}
+
+.auth-choice-card:hover {
+    background: var(--bg-color) !important;
+    border-color: var(--border-color) !important;
+    transform: translateX(3px) !important;
+    text-decoration: none !important;
+    color: var(--primary-color) !important;
+}
+
+.auth-choice-icon {
+    font-size: 1.4rem !important;
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 10px !important;
+    background: rgba(255, 84, 77, 0.12) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+    line-height: 1 !important;
+}
+
+.auth-choice-info {
+    flex-grow: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    text-align: left !important;
+}
+
+.auth-choice-title {
+    font-weight: 700 !important;
+    font-size: 0.95rem !important;
+    color: var(--text-color) !important;
+    text-decoration: none !important;
+    display: block !important;
+}
+
+.auth-choice-card:hover .auth-choice-title {
+    color: var(--primary-color) !important;
+}
+
+.auth-choice-desc {
+    font-size: 0.78rem !important;
+    color: var(--text-color) !important;
+    opacity: 0.7 !important;
+    margin-top: 2px !important;
+    text-decoration: none !important;
+    display: block !important;
+}
+
+.auth-choice-arrow {
+    font-size: 1rem !important;
+    color: var(--text-color) !important;
+    opacity: 0.45 !important;
+    transition: transform 0.2s ease, color 0.2s ease !important;
+    text-decoration: none !important;
+}
+
+.auth-choice-card:hover .auth-choice-arrow {
+    transform: translateX(3px) !important;
+    color: var(--primary-color) !important;
+    opacity: 1 !important;
+}
+
+.auth-choice-divider {
+    height: 1px !important;
+    background: var(--border-color) !important;
+    margin: 2px 4px !important;
+    opacity: 0.6 !important;
+}
+
+@media (max-width: 768px) {
+    .auth-choice-menu {
+        right: 0 !important;
+        left: auto !important;
+        width: 260px !important;
+    }
+}
+
+/* ==========================================================================
+   Home Vision Vektoros Piktogram Rendszer (SVG Icons)
+   ========================================================================== */
+.hv-icon {
+    display: inline-block;
+    width: 1.15em;
+    height: 1.15em;
+    vertical-align: -0.18em;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+    transition: transform 0.2s ease, stroke 0.2s ease;
+}
+
+.hv-icon-sm {
+    width: 0.95em;
+    height: 0.95em;
+    vertical-align: -0.12em;
+}
+
+.hv-icon-lg {
+    width: 1.45em;
+    height: 1.45em;
+    vertical-align: -0.25em;
+}
+
+.hv-icon-xl {
+    width: 2.2rem;
+    height: 2.2rem;
+}
+
+.hv-icon-fill {
+    fill: currentColor;
+    stroke: none;
+}
+
+.nav-controls .btn-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-controls .btn-icon .hv-icon {
+    width: 1.25em;
+    height: 1.25em;
+}
+
+.auth-choice-icon .hv-icon {
+    width: 1.4rem;
+    height: 1.4rem;
+    color: var(--primary-color);
+}
+
+.footer-section ul li .hv-icon {
+    color: var(--primary-color);
+    margin-right: 4px;
+}

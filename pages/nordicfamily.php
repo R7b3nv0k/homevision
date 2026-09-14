@@ -1,3 +1,6 @@
+<?php
+require_once __DIR__ . '/../config/db.php';
+?>
 <!DOCTYPE html>
 <html lang="hu" data-theme="light">
 
@@ -5,7 +8,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Vision | Nordic Family — Prémium Skandináv Családi Házterv</title>
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/style.css?v=<?= filemtime(__DIR__ . '/../css/style.css') ?>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
@@ -26,23 +29,51 @@
 
     <!-- Navigáció -->
     <nav class="navbar">
-        <a href="../index.html" class="logo" style="display: flex; align-items: center;"
+        <a href="../index.php" class="logo" style="display: flex; align-items: center;"
             aria-label="HomeVision Főoldal">
             <img src="../images/logo.png" alt="HomeVision" class="logo-img logo-light">
             <img src="../images/logo-dark.png" alt="HomeVision" class="logo-img logo-dark">
         </a>
         <ul class="nav-links">
-            <li><a href="../index.html" data-i18n="home">Főoldal</a></li>
-            <li><a href="tervek.html" class="active" data-i18n="plans">Tervek</a></li>
-            <li><a href="megvalositas.html" data-i18n="implementation">Megvalósítás</a></li>
-            <li><a href="media.html" data-i18n="media">Média</a></li>
-            <li><a href="rolunk.html" data-i18n="about">Rólunk</a></li>
-            <li><a href="kapcsolat.html" data-i18n="contact">Kapcsolat</a></li>
+            <li><a href="../index.php" data-i18n="home">Főoldal</a></li>
+            <li><a href="tervek.php" class="active" data-i18n="plans">Tervek</a></li>
+            <li><a href="megvalositas.php" data-i18n="implementation">Megvalósítás</a></li>
+            <li><a href="media.php" data-i18n="media">Média</a></li>
+            <li><a href="rolunk.php" data-i18n="about">Rólunk</a></li>
+            <li><a href="kapcsolat.php" data-i18n="contact">Kapcsolat</a></li>
         </ul>
         <div class="nav-controls">
-            <button id="themeToggle" class="btn-icon" aria-label="Téma váltás">🌓</button>
+            <button id="themeToggle" class="btn-icon" aria-label="Téma váltás"><?= hv_icon('theme') ?></button>
             <button id="langToggle" class="btn-text" aria-label="Nyelv váltás">EN</button>
-            <button id="loginBtn" class="btn-primary" data-i18n="login">Bejelentkezés</button>
+            <?php if (isset($_SESSION['user_id'])): ?>
+                <a href="../profile.php" class="btn-primary" style="text-decoration: none;" id="loginBtn"><?= hv_icon('user') ?> <span class="i18n-text" data-i18n="profile_btn">Profil</span></a>
+            <?php else: ?>
+                <div class="auth-dropdown-wrapper" id="authDropdownWrapper">
+                    <button id="authChoiceBtn" class="btn-primary auth-choice-btn" aria-haspopup="true" aria-expanded="false">
+                        <span data-i18n="login_register">Bejelentkezés / Regisztráció</span>
+                        <span class="auth-btn-arrow"><?= hv_icon('arrow_down', 'hv-icon-sm') ?></span>
+                    </button>
+                    <div class="auth-choice-menu" id="authChoiceMenu" style="display: none;">
+                        <a href="../login.php" class="auth-choice-card">
+                            <span class="auth-choice-icon"><?= hv_icon('key') ?></span>
+                            <div class="auth-choice-info">
+                                <span class="auth-choice-title" data-i18n="dropdown_login">Bejelentkezés</span>
+                                <span class="auth-choice-desc" data-i18n="dropdown_login_desc">Lépj be meglévő fiókodba</span>
+                            </div>
+                            <span class="auth-choice-arrow"><?= hv_icon('arrow_right', 'hv-icon-sm') ?></span>
+                        </a>
+                        <div class="auth-choice-divider"></div>
+                        <a href="../register.php" class="auth-choice-card">
+                            <span class="auth-choice-icon"><?= hv_icon('edit') ?></span>
+                            <div class="auth-choice-info">
+                                <span class="auth-choice-title" data-i18n="dropdown_register">Regisztráció</span>
+                                <span class="auth-choice-desc" data-i18n="dropdown_register_desc">Új fiók létrehozása</span>
+                            </div>
+                            <span class="auth-choice-arrow"><?= hv_icon('arrow_right', 'hv-icon-sm') ?></span>
+                        </a>
+                    </div>
+                </div>
+            <?php endif; ?>
             <button id="mobileMenuBtn" class="hamburger-btn" aria-label="Menü megnyitása">
                 <span class="hamburger-line"></span>
                 <span class="hamburger-line"></span>
@@ -59,16 +90,16 @@
         <div class="ad-top-ribbon">
             <div>
                 <span class="ad-top-ribbon-tag">Őszi Akció</span>
-                <span>🔥 <strong>-70.000 Ft kedvezmény</strong> a tervcsomagra + Ingyenes helyszíni konzultáció a
+                <span><?= hv_icon('flame') ?> <strong>-70.000 Ft kedvezmény</strong> a tervcsomagra + Ingyenes helyszíni konzultáció a
                     Térmágus Kft.-vel!</span>
             </div>
-            <div style="font-weight: 600; opacity: 0.9;">⏳ Korlátozott ideig érvényes ajánlat</div>
+            <div style="font-weight: 600; opacity: 0.9; display: inline-flex; align-items: center; gap: 6px;"><?= hv_icon('clock') ?> Korlátozott ideig érvényes ajánlat</div>
         </div>
 
         <!-- 2. Morzsamenü -->
         <div class="ad-breadcrumb">
-            <a href="../index.html">Főoldal</a> &rsaquo;
-            <a href="tervek.html">Megvásárolható Tervek</a> &rsaquo;
+            <a href="../index.php">Főoldal</a> &rsaquo;
+            <a href="tervek.php">Megvásárolható Tervek</a> &rsaquo;
             <span>Nordic Family Modell (150 m²)</span>
         </div>
 
@@ -85,11 +116,11 @@
                 </div>
             </div>
             <div class="ad-badge-group">
-                <span class="ad-badge featured">🔥 Bestseller Családi Házterv</span>
-                <span class="ad-badge energy">⚡ A+ Közel Nulla Energiaigény</span>
-                <span class="ad-badge award">🏆 2026 Kivitelezési Nívódíj</span>
-                <span class="ad-badge">🛡️ 100% Engedélyezési Garancia</span>
-                <span class="ad-badge">⭐ 4.9 / 5.0 (18 Megvalósult Épület)</span>
+                <span class="ad-badge featured"><?= hv_icon('flame') ?> Bestseller Családi Házterv</span>
+                <span class="ad-badge energy"><?= hv_icon('zap') ?> A+ Közel Nulla Energiaigény</span>
+                <span class="ad-badge award"><?= hv_icon('award') ?> 2026 Kivitelezési Nívódíj</span>
+                <span class="ad-badge"><?= hv_icon('shield') ?> 100% Engedélyezési Garancia</span>
+                <span class="ad-badge"><?= hv_icon('award') ?> 4.9 / 5.0 (18 Megvalósult Épület)</span>
             </div>
         </div>
 
@@ -102,13 +133,13 @@
                 <div class="viewer-header-bar">
                     <div class="viewer-tab-buttons">
                         <button class="viewer-tab-btn active" id="tab3dBtn" onclick="switchViewerTab('3d')">
-                            🎮 3D Modell
+                            <?= hv_icon('cube') ?> 3D Modell
                         </button>
                         <button class="viewer-tab-btn" id="tabGalleryBtn" onclick="switchViewerTab('gallery')">
-                            📸 Látványtervek
+                            <?= hv_icon('camera') ?> Látványtervek
                         </button>
                         <button class="viewer-tab-btn" id="tabFloorplanBtn" onclick="switchViewerTab('floorplan')">
-                            📐 Alaprajz
+                            <?= hv_icon('ruler') ?> Alaprajz
                         </button>
                     </div>
                     <div class="live-indicator">
@@ -124,13 +155,13 @@
                     <!-- Lebegő Vezérlősáv a 3D vásznon -->
                     <div class="model-toolbar-floating">
                         <button id="btnToggleRotate" class="tool-btn active" title="Forgatás ki/bekapcsolása">
-                            🔄 Forgatás
+                            <?= hv_icon('rotate') ?> Forgatás
                         </button>
                         <button id="btnToggleRoof" class="tool-btn" title="Tető levétele / visszahelyezése">
-                            🏠 Tető
+                            <?= hv_icon('roof') ?> Tető
                         </button>
                         <button id="btnToggleDayNight" class="tool-btn" title="Nappali és éjszakai fények váltása">
-                            ☀️ Nappal
+                            <?= hv_icon('sun') ?> Nappal
                         </button>
                         <span class="toolbar-divider" aria-hidden="true"></span>
                         <button id="btnViewFront" class="tool-btn" title="Homlokzati nézet">
@@ -143,7 +174,7 @@
                             Felülnézet
                         </button>
                         <button id="btnResetCamera" class="tool-btn" title="Alap kameraállás visszaállítása">
-                            ⛶ Alap
+                            <?= hv_icon('cube') ?> Alap
                         </button>
                     </div>
                 </div>
@@ -264,7 +295,7 @@
 
                 <!-- Alsó Használati Segítség Sor -->
                 <div class="viewer-hint-strip">
-                    <span>💡 <strong>Irányítás:</strong> Bal gomb = forgatás • Görgő = zoom • Jobb gomb = mozgatás •
+                    <span><?= hv_icon('bulb') ?> <strong>Irányítás:</strong> Bal gomb = forgatás • Görgő = zoom • Jobb gomb = mozgatás •
                         Próbáld ki a tető levételét és az éjszakai módot!</span>
                 </div>
             </div>
@@ -281,7 +312,7 @@
                         <h2 class="ad-current-price">350.000 Ft <span class="brutto">(bruttó)</span></h2>
                     </div>
                     <div class="ad-price-perks">
-                        <span>⚡ Megtakarítás: <strong>70.000 Ft</strong></span>
+                        <span><?= hv_icon('zap') ?> Megtakarítás: <strong>70.000 Ft</strong></span>
                         <span>• Azonnali letöltés</span>
                     </div>
                 </div>
@@ -289,32 +320,32 @@
                 <!-- 6 Ikonos Főbb Jellemzők -->
                 <div class="ad-quick-specs">
                     <div class="ad-spec-item">
-                        <span class="ad-spec-icon">📐</span>
+                        <span class="ad-spec-icon"><?= hv_icon('ruler') ?></span>
                         <span class="ad-spec-val">150 m²</span>
                         <span class="ad-spec-lbl">Hasznos lakótér</span>
                     </div>
                     <div class="ad-spec-item">
-                        <span class="ad-spec-icon">🛏️</span>
+                        <span class="ad-spec-icon"><?= hv_icon('bed') ?></span>
                         <span class="ad-spec-val">5 Szoba</span>
                         <span class="ad-spec-lbl">4 Háló + Nappali</span>
                     </div>
                     <div class="ad-spec-item">
-                        <span class="ad-spec-icon">🚿</span>
+                        <span class="ad-spec-icon"><?= hv_icon('bath') ?></span>
                         <span class="ad-spec-val">2 Fürdő</span>
                         <span class="ad-spec-lbl">+ Külön WC</span>
                     </div>
                     <div class="ad-spec-item">
-                        <span class="ad-spec-icon">🚗</span>
+                        <span class="ad-spec-icon"><?= hv_icon('car') ?></span>
                         <span class="ad-spec-val">36 m²</span>
                         <span class="ad-spec-lbl">Dupla Garázs</span>
                     </div>
                     <div class="ad-spec-item">
-                        <span class="ad-spec-icon">🌿</span>
+                        <span class="ad-spec-icon"><?= hv_icon('leaf') ?></span>
                         <span class="ad-spec-val">38 m²</span>
                         <span class="ad-spec-lbl">Fedett Terasz</span>
                     </div>
                     <div class="ad-spec-item">
-                        <span class="ad-spec-icon">⚡</span>
+                        <span class="ad-spec-icon"><?= hv_icon('zap') ?></span>
                         <span class="ad-spec-val">A+ Osztály</span>
                         <span class="ad-spec-lbl">Hőszivattyús</span>
                     </div>
@@ -322,49 +353,49 @@
 
                 <!-- Mit Tartalmaz a Tervcsomag? -->
                 <div class="ad-package-title">
-                    📦 Mit tartalmaz a tervcsomag?
+                    <?= hv_icon('package') ?> <span>Mit tartalmaz a tervcsomag?</span>
                 </div>
                 <ul class="ad-package-list">
-                    <li><span class="ad-check-icon">✓</span> <span><strong>Építészeti kiviteli tervdokumentáció</strong>
+                    <li><span class="ad-check-icon"><?= hv_icon('check', 'hv-icon-sm') ?></span> <span><strong>Építészeti kiviteli tervdokumentáció</strong>
                             (M=1:50 méretarányban)</span></li>
-                    <li><span class="ad-check-icon">✓</span> <span><strong>Tartószerkezeti (statikai) tervek</strong> és
+                    <li><span class="ad-check-icon"><?= hv_icon('check', 'hv-icon-sm') ?></span> <span><strong>Tartószerkezeti (statikai) tervek</strong> és
                             vasalási számítások</span></li>
-                    <li><span class="ad-check-icon">✓</span> <span><strong>Épületgépészeti kiviteli tervek</strong>
+                    <li><span class="ad-check-icon"><?= hv_icon('check', 'hv-icon-sm') ?></span> <span><strong>Épületgépészeti kiviteli tervek</strong>
                             (hőszivattyú, padlófűtés)</span></li>
-                    <li><span class="ad-check-icon">✓</span> <span><strong>Erős- és gyengeáramú</strong> villamos
+                    <li><span class="ad-check-icon"><?= hv_icon('check', 'hv-icon-sm') ?></span> <span><strong>Erős- és gyengeáramú</strong> villamos
                             hálózati tervek</span></li>
-                    <li><span class="ad-check-icon">✓</span> <span><strong>Tételes árazatlan költségvetési
+                    <li><span class="ad-check-icon"><?= hv_icon('check', 'hv-icon-sm') ?></span> <span><strong>Tételes árazatlan költségvetési
                                 kiírás</strong> (anyaglista)</span></li>
-                    <li><span class="ad-check-icon">✓</span> <span><strong>Hivatalos energetikai tanúsítvány</strong> és
+                    <li><span class="ad-check-icon"><?= hv_icon('check', 'hv-icon-sm') ?></span> <span><strong>Hivatalos energetikai tanúsítvány</strong> és
                             számítás</span></li>
-                    <li><span class="ad-check-icon">✓</span> <span><strong>5 db pecsételt nyomtatott példány</strong>
+                    <li><span class="ad-check-icon"><?= hv_icon('check', 'hv-icon-sm') ?></span> <span><strong>5 db pecsételt nyomtatott példány</strong>
                             ingyenes futárszolgálattal</span></li>
-                    <li><span class="ad-check-icon">✓</span> <span><strong>Digitális formátumok:</strong> PDF, DWG (CAD)
+                    <li><span class="ad-check-icon"><?= hv_icon('check', 'hv-icon-sm') ?></span> <span><strong>Digitális formátumok:</strong> PDF, DWG (CAD)
                             és BIM 3D modell</span></li>
                 </ul>
 
                 <!-- Akciógombok -->
                 <div class="ad-actions">
                     <button class="btn-primary btn-ad-buy" id="buyPlanBtn">
-                        🛒 Tervcsomag Megvásárlása Most
+                        <?= hv_icon('cart') ?> <span>Tervcsomag Megvásárlása Most</span>
                     </button>
-                    <a href="kapcsolat.html" class="btn-ad-secondary">
-                        📞 Ingyenes Mérnöki Konzultáció Kérése
+                    <a href="kapcsolat.php" class="btn-ad-secondary">
+                        <?= hv_icon('phone') ?> <span>Ingyenes Mérnöki Konzultáció Kérése</span>
                     </a>
                 </div>
 
                 <!-- Bizalmi Garancia Doboz -->
                 <div class="ad-trust-row">
                     <div class="ad-trust-item">
-                        <span>🛡️</span>
+                        <span><?= hv_icon('shield') ?></span>
                         <span>100% Engedélyezési Garancia</span>
                     </div>
                     <div class="ad-trust-item">
-                        <span>🏗️</span>
+                        <span><?= hv_icon('construction') ?></span>
                         <span>Térmágus Kft. Kivitelezés</span>
                     </div>
                     <div class="ad-trust-item">
-                        <span>🔒</span>
+                        <span><?= hv_icon('lock') ?></span>
                         <span>Biztonságos Fizetés</span>
                     </div>
                 </div>
@@ -383,7 +414,7 @@
 
             <div class="features-grid-ad">
                 <div class="feature-card-ad">
-                    <div class="feature-card-icon">🌅</div>
+                    <div class="feature-card-icon"><?= hv_icon('sun', 'hv-icon-xl') ?></div>
                     <h3>Panorámás Nappali & Teraszkapcsolat</h3>
                     <p>
                         A 42 m²-es egybefüggő amerikai konyhás nappali 3 méteres padlótól mennyezetig érő üvegfalakkal
@@ -393,7 +424,7 @@
                 </div>
 
                 <div class="feature-card-ad">
-                    <div class="feature-card-icon">🧘</div>
+                    <div class="feature-card-icon"><?= hv_icon('user', 'hv-icon-xl') ?></div>
                     <h3>Különválasztott Szülői Intimitás</h3>
                     <p>
                         Az átgondolt alaprajz a szülői hálószobát saját gardróbbal és prémium fürdőszobával a csendes
@@ -402,7 +433,7 @@
                 </div>
 
                 <div class="feature-card-ad">
-                    <div class="feature-card-icon">🔋</div>
+                    <div class="feature-card-icon"><?= hv_icon('zap', 'hv-icon-xl') ?></div>
                     <h3>Közel Nulla Rezsi & A+ Energetika</h3>
                     <p>
                         30 cm-es modern téglafalazat 15 cm grafitos hőszigeteléssel, 3 rétegű thermo nyílászárók,
@@ -417,7 +448,7 @@
         <div class="specs-and-rooms-container">
             <!-- Helyiséglista Táblázat -->
             <div class="table-card-ad">
-                <h3>📐 Helyiséglista & Alapterületek</h3>
+                <h3><?= hv_icon('ruler') ?> <span>Helyiséglista & Alapterületek</span></h3>
                 <table class="room-table">
                     <thead>
                         <tr>
@@ -494,7 +525,7 @@
 
             <!-- Műszaki Paraméterek -->
             <div class="table-card-ad">
-                <h3>⚙️ Főbb Műszaki Paraméterek</h3>
+                <h3><?= hv_icon('zap') ?> <span>Főbb Műszaki Paraméterek</span></h3>
                 <div class="tech-spec-list">
                     <div class="tech-spec-row">
                         <span>Épület Jellege:</span>
@@ -562,13 +593,13 @@
                     alapozástól a beköltözésig.
                 </p>
                 <div class="partner-features-pills">
-                    <span class="partner-pill">⏱️ 6-8 Hónap Átlagos Átadási Idő</span>
-                    <span class="partner-pill">📄 Fix Áras Szerződés Rejtett Költségek Nélkül</span>
-                    <span class="partner-pill">🛡️ 10 Év Szerkezeti Garancia</span>
+                    <span class="partner-pill"><?= hv_icon('clock') ?> 6-8 Hónap Átlagos Átadási Idő</span>
+                    <span class="partner-pill"><?= hv_icon('file') ?> Fix Áras Szerződés Rejtett Költségek Nélkül</span>
+                    <span class="partner-pill"><?= hv_icon('shield') ?> 10 Év Szerkezeti Garancia</span>
                 </div>
             </div>
             <div>
-                <a href="megvalositas.html" class="btn-primary"
+                <a href="megvalositas.php" class="btn-primary"
                     style="padding: 1rem 2rem; font-size: 1rem; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
                     Megvalósítás Részletei &rarr;
                 </a>
@@ -583,14 +614,14 @@
 
             <div class="ad-faq-grid">
                 <div class="ad-faq-item">
-                    <h4>❓ Módosítható-e az alaprajz a saját igényeinkre?</h4>
+                    <h4><?= hv_icon('help') ?> Módosítható-e az alaprajz a saját igényeinkre?</h4>
                     <p>
                         Természetesen! Mérnökcsapatunk a Térmágus Kft.-vel együttműködve a telek adottságaihoz,
                         tájolásához vagy a család egyedi igényeihez igazítja a falakat, ablakméreteket és elrendezést.
                     </p>
                 </div>
                 <div class="ad-faq-item">
-                    <h4>❓ Mennyi idő alatt kapom meg a terveket?</h4>
+                    <h4><?= hv_icon('help') ?> Mennyi idő alatt kapom meg a terveket?</h4>
                     <p>
                         A digitális csomagot (PDF tervlapok, szerkeszthető CAD/DWG állományok, költségvetési kiírás) a
                         sikeres fizetést követően azonnal letöltheted. Az 5 darab pecsételt, nyomtatott
@@ -598,14 +629,14 @@
                     </p>
                 </div>
                 <div class="ad-faq-item">
-                    <h4>❓ Alkalmas-e a terv a CSOK Plusz és támogatások igénylésére?</h4>
+                    <h4><?= hv_icon('help') ?> Alkalmas-e a terv a CSOK Plusz és támogatások igénylésére?</h4>
                     <p>
                         Igen, a Nordic Family tervdokumentáció maradéktalanul megfelel a hatályos OTÉK előírásoknak, az
                         A+ energetikai követelményeknek, így azonnal alkalmas CSOK Plusz és zöld hitelek igénylésére.
                     </p>
                 </div>
                 <div class="ad-faq-item">
-                    <h4>❓ Segítenek-e a hatósági egyszerű bejelentésben?</h4>
+                    <h4><?= hv_icon('help') ?> Segítenek-e a hatósági egyszerű bejelentésben?</h4>
                     <p>
                         Igen! Ha a Térmágus Kft.-vel építteted fel az otthonodat, a teljes engedélyezési és egyszerű
                         bejelentési eljárást, a felelős műszaki vezetést és a használatbavételi engedély intézését is
@@ -622,7 +653,7 @@
         <div class="footer-container">
             <div class="footer-grid">
                 <div class="footer-col">
-                    <a href="../index.html" class="logo" style="margin-bottom: 1rem; display: inline-flex;"
+                    <a href="../index.php" class="logo" style="margin-bottom: 1rem; display: inline-flex;"
                         aria-label="HomeVision Főoldal">
                         <img src="../images/logo.png" alt="HomeVision" class="logo-img logo-light">
                         <img src="../images/logo-dark.png" alt="HomeVision" class="logo-img logo-dark">
@@ -646,22 +677,22 @@
                 <div class="footer-col">
                     <h4 class="footer-heading" data-i18n="footer_quicklinks">Gyorslinkek</h4>
                     <ul class="footer-links">
-                        <li><a href="../index.html" data-i18n="home">Főoldal</a></li>
-                        <li><a href="tervek.html" class="active" data-i18n="plans">Tervek</a></li>
-                        <li><a href="megvalositas.html" data-i18n="implementation">Megvalósítás</a></li>
-                        <li><a href="media.html" data-i18n="media">Média</a></li>
-                        <li><a href="rolunk.html" data-i18n="about">Rólunk</a></li>
-                        <li><a href="kapcsolat.html" data-i18n="contact">Kapcsolat</a></li>
+                        <li><a href="../index.php" data-i18n="home">Főoldal</a></li>
+                        <li><a href="tervek.php" class="active" data-i18n="plans">Tervek</a></li>
+                        <li><a href="megvalositas.php" data-i18n="implementation">Megvalósítás</a></li>
+                        <li><a href="media.php" data-i18n="media">Média</a></li>
+                        <li><a href="rolunk.php" data-i18n="about">Rólunk</a></li>
+                        <li><a href="kapcsolat.php" data-i18n="contact">Kapcsolat</a></li>
                     </ul>
                 </div>
 
                 <div class="footer-col">
                     <h4 class="footer-heading" data-i18n="footer_contact">Elérhetőségek</h4>
                     <ul class="footer-info-list">
-                        <li>📞 <a href="tel:+3612345678">+36 (1) 234-5678</a></li>
-                        <li>📱 <a href="tel:+36309876543">+36 (30) 987-6543</a></li>
-                        <li>✉️ <a href="mailto:info@homevision.hu">info@homevision.hu</a></li>
-                        <li>🕒 <span data-i18n="footer_hours">H-P: 09:00 - 17:00</span></li>
+                        <li><?= hv_icon('phone') ?> <a href="tel:+3612345678">+36 (1) 234-5678</a></li>
+                        <li><?= hv_icon('mobile') ?> <a href="tel:+36309876543">+36 (30) 987-6543</a></li>
+                        <li><?= hv_icon('mail') ?> <a href="mailto:info@homevision.hu">info@homevision.hu</a></li>
+                        <li><?= hv_icon('clock') ?> <span data-i18n="footer_hours">H-P: 09:00 - 17:00</span></li>
                     </ul>
                 </div>
             </div>
@@ -674,29 +705,54 @@
         </div>
     </footer>
 
-    <!-- Login / Vásárlás Modal -->
+    <!-- Bejelentkezés / Regisztráció Modal -->
     <div id="authModal" class="modal">
         <div class="modal-content">
             <span class="close-btn">&times;</span>
-            <h2 id="modalTitle">Tervdokumentáció Vásárlása</h2>
+            <h2 id="modalTitle" data-i18n="login_title">Bejelentkezés</h2>
+            <div id="authAlert" style="display:none; padding: 10px; margin-bottom: 12px; border-radius: 8px; font-size: 0.9rem; text-align: center;"></div>
+            <form id="authForm" action="../api/auth.php" method="POST">
+                <input type="hidden" name="action" id="authActionField" value="login">
+                <div id="registerFields" style="display: none;">
+                    <input type="text" id="authName" name="full_name" placeholder="Teljes név" data-i18n-placeholder="name">
+                    <input type="tel" id="authPhone" name="phone" placeholder="Telefonszám (pl. +36 30 123 4567)">
+                </div>
+                <input type="email" id="authEmail" name="email" placeholder="Email cím" required data-i18n-placeholder="email">
+                <input type="password" id="authPassword" name="password" placeholder="Jelszó" required data-i18n-placeholder="password">
+                <div id="registerConfirmField" style="display: none;">
+                    <input type="password" id="authPasswordConfirm" name="password_confirm" placeholder="Jelszó megerősítése">
+                </div>
+                <button type="submit" class="btn-primary auth-submit" data-i18n="login_submit">Belépés</button>
+            </form>
+            <p class="switch-auth">
+                <span data-i18n="no_account">Nincs még fiókod?</span>
+                <a href="#" id="switchMode" data-i18n="register_link">Regisztrálj!</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Tervdokumentáció Vásárlás Modal -->
+    <div id="checkoutModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="document.getElementById('checkoutModal').classList.remove('show');">&times;</span>
+            <h2>Tervdokumentáció Vásárlása</h2>
             <p style="font-size: 0.88rem; opacity: 0.8; margin: 8px 0 16px;">
                 Add meg az adataidat a letöltési link azonnali elküldéséhez és a hivatalos számlázáshoz:
             </p>
-            <form id="authForm">
-                <input type="text" placeholder="Teljes Név" required>
-                <input type="email" placeholder="Email Cím (ide érkezik a letöltés)" required>
-                <input type="tel" placeholder="Telefonszám (futárszolgálathoz)" required>
-                <button type="submit" class="btn-primary auth-submit">Tovább a Biztonságos Fizetéshez (350.000
-                    Ft)</button>
+            <form id="checkoutForm" onsubmit="event.preventDefault(); alert('Köszönjük! A számlát és a letöltési linket emailben továbbítjuk.'); document.getElementById('checkoutModal').classList.remove('show');">
+                <input type="text" placeholder="Teljes Név" value="<?= isset($_SESSION['full_name']) ? htmlspecialchars($_SESSION['full_name']) : '' ?>" required>
+                <input type="email" placeholder="Email Cím (ide érkezik a letöltés)" value="<?= isset($_SESSION['email']) ? htmlspecialchars($_SESSION['email']) : '' ?>" required>
+                <input type="tel" placeholder="Telefonszám (futárszolgálathoz)" value="<?= isset($_SESSION['phone']) ? htmlspecialchars($_SESSION['phone']) : '' ?>" required>
+                <button type="submit" class="btn-primary auth-submit">Tovább a Biztonságos Fizetéshez (1.850.000 Ft)</button>
             </form>
-            <p class="switch-auth" style="font-size: 0.82rem; opacity: 0.75;">
-                🔒 256 bites SSL biztonság • 100% Pénzvisszafizetési és Engedélyezési Garancia
+            <p class="switch-auth" style="font-size: 0.82rem; opacity: 0.75; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                <?= hv_icon('lock', 'hv-icon-sm') ?> <span>256 bites SSL biztonság • 100% Pénzvisszafizetési és Engedélyezési Garancia</span>
             </p>
         </div>
     </div>
 
     <!-- Weboldal Alap Script -->
-    <script src="../js/script.js"></script>
+    <script src="../js/script.js?v=<?= filemtime(__DIR__ . '/../js/script.js') ?>"></script>
 
     <!-- Tab Váltás Script (3D / Galéria / Alaprajz) -->
     <script>
@@ -1248,7 +1304,7 @@
                 btnRoof.addEventListener('click', () => {
                     isRoofLifted = !isRoofLifted;
                     btnRoof.classList.toggle('active', isRoofLifted);
-                    btnRoof.textContent = isRoofLifted ? '🏠 Tető Vissza' : '🏠 Tető';
+                    btnRoof.innerHTML = (typeof HV_ICONS !== 'undefined' ? HV_ICONS.roof : '') + ' ' + (isRoofLifted ? 'Tető Vissza' : 'Tető');
 
                     let targetY = isRoofLifted ? 5.5 : 0;
                     animateRoof(targetY);
@@ -1280,7 +1336,7 @@
                 btnDayNight.addEventListener('click', () => {
                     isNightMode = !isNightMode;
                     btnDayNight.classList.toggle('active', isNightMode);
-                    btnDayNight.textContent = isNightMode ? '🌙 Éjszaka' : '☀️ Nappal';
+                    btnDayNight.innerHTML = (typeof HV_ICONS !== 'undefined' ? (isNightMode ? HV_ICONS.moon : HV_ICONS.sun) : '') + ' ' + (isNightMode ? 'Éjszaka' : 'Nappal');
 
                     if (isNightMode) {
                         sunLight.intensity = 0.12;
